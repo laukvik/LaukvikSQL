@@ -2,69 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90f2224a-09ac-416c-970d-bc06acd8a04f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/absolutelayout/AbsoluteLayout.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/mysql-connector-java-5.1.34-bin.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/mysql-connector-java-5.1.36.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/CopyLibs/org-netbeans-modules-java-j2seproject-copylibstask.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/postgresql-9.2-1004-jdbc4-javadoc.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/postgresql-9.2-1004-jdbc4.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/postgresql-9.3-1102.jdbc41.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/sqljdbc42.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/BigIntColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/BinaryColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/BitColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/CharColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/Column.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/ConnectDialog.form" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/ConnectDialog.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/DatabaseConnection.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/DatabaseConnectionFileFilter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/DatabaseConnectionNotFoundException.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/DateColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/DecimalColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/Diagram.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/DoubleColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/EvenOddRenderer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/FloatColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/Function.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/IntegerColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LaukvikSQL.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/LongVarBinaryColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/LongVarCharColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/NumericColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/OtherColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/RealColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/ResultSetTableModel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/SQL.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/Schema.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/SmallIntColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/SqlTableHeaderRenderer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/Sqlable.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/Table.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/TableDefinitionTableModel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/TextColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/TimeColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/TimestampColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/TinyIntColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/TreeModel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/VarBinaryColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/VarCharColumn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/ddl/View.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/Viewer.form" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/Viewer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/nbproject/build-impl.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/nbproject/private/config.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/nbproject/genfiles.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/logging.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/manifest.mf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/messages.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/nblibraries.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/nbproject/private/private.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/nbproject/project.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/nbproject/project.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.travis.yml" />
     </list>
     <ignored path="LaukvikSQL.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,6 +24,20 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="LaukvikSQL" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name=".travis.yml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.travis.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -670,16 +622,16 @@
       <created>1444305259767</created>
       <option name="number" value="Default" />
       <updated>1444305259767</updated>
-      <workItem from="1444305260313" duration="245000" />
+      <workItem from="1444305260313" duration="726000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="245000" />
+    <option name="totallyTimeSpent" value="726000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -693,7 +645,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24964234" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24964234" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1068,6 +1020,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.35943517" vertical-offset="0" max-vertical-offset="779">
           <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
