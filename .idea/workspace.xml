@@ -2,7 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90f2224a-09ac-416c-970d-bc06acd8a04f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.travis.yml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/AbsoluteLayout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/org/laukvik/sql/SQLTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/build.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/CopyLibs/org-netbeans-modules-java-j2seproject-copylibstask.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/mysql-connector-java-5.1.36.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/nblibraries.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/postgresql-9.2-1004-jdbc4-javadoc.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/postgresql-9.3-1102.jdbc41.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/build-impl.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/genfiles.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/private/config.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/private/private.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/private/private.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/project.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/nbproject/project.xml" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/lib/absolutelayout/AbsoluteLayout.jar" afterPath="$PROJECT_DIR$/lib/AbsoluteLayout.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/logging.properties" afterPath="$PROJECT_DIR$/resources/logging.properties" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/org/laukvik/sql/messages.properties" afterPath="$PROJECT_DIR$/resources/messages.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/LaukvikSQL.iml" afterPath="$PROJECT_DIR$/.idea/LaukvikSQL.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/laukvik/sql/SQL.java" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/SQL.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/laukvik/sql/swing/TreeModel.java" afterPath="$PROJECT_DIR$/src/org/laukvik/sql/swing/TreeModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="LaukvikSQL.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,15 +47,17 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
-    <favorites_list name="LaukvikSQL" />
+    <favorites_list name="LaukvikSQL">
+      <favorite_root url="file://$PROJECT_DIR$/src/org/laukvik/sql/SQL.java" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+    </favorites_list>
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name=".travis.yml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <file leaf-file-name="SQL.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/SQL.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.3031496" vertical-offset="1666" max-vertical-offset="5572">
+              <caret line="171" column="40" selection-start-line="171" selection-start-column="40" selection-end-line="171" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -46,6 +72,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/org/laukvik/sql/swing/Viewer.java" />
+        <option value="$PROJECT_DIR$/nbproject/build-impl.xml" />
+        <option value="$PROJECT_DIR$/test/org/laukvik/sql/SQL.java" />
+        <option value="$PROJECT_DIR$/test/org/laukvik/sql/SQLTest.java" />
+        <option value="$PROJECT_DIR$/src/org/laukvik/sql/swing/TreeModel.java" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/org/laukvik/sql/SQL.java" />
       </list>
     </option>
   </component>
@@ -84,6 +116,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -112,29 +145,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LaukvikSQL" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LaukvikSQL" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="laukvik" />
+              <option name="myItemId" value="test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -156,11 +167,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
+              <option name="myItemId" value="sql" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LaukvikSQL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LaukvikSQL" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="laukvik" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -172,23 +193,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LaukvikSQL" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LaukvikSQL" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nbproject" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -198,10 +204,107 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/sqljdbc42.jar!/" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="laukviksql" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
   </component>
-  <component name="RunManager">
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings />
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources" />
+      <recent name="$PROJECT_DIR$/lib" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.SQL">
+    <configuration default="false" name="SQL" type="Application" factoryName="Application" singleton="true" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="org.laukvik.sql.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="org.laukvik.sql.SQL" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="-query=&quot;SELECT * FROM Users&quot; default" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="LaukvikSQL" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="SQLTest.shoudListTables" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="org.laukvik.sql.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="LaukvikSQL" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="org.laukvik.sql" />
+      <option name="MAIN_CLASS_NAME" value="org.laukvik.sql.SQLTest" />
+      <option name="METHOD_NAME" value="shoudListTables" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="All in LaukvikSQL" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="LaukvikSQL" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -517,6 +620,7 @@
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="JAR_PATH" value="$PROJECT_DIR$/lib/postgresql-9.2-1004-jdbc4-javadoc.jar" />
       <envs />
       <method />
     </configuration>
@@ -549,6 +653,11 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <pass-parent-envs>true</pass-parent-envs>
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -613,7 +722,34 @@
     <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
       <method />
     </configuration>
-    <list size="0" />
+    <configuration default="false" name="Specifications" type="executeSpecs" factoryName="Gauge Execution">
+      <setting name="environment" value="" />
+      <setting name="specsToExecute" value="$PROJECT_DIR$/specs" />
+      <setting name="tags" value="" />
+      <setting name="parallelNodes" value="" />
+      <setting name="execInParallel" value="false" />
+      <setting name="programParameters" value="" />
+      <setting name="workingDirectory" value="" />
+      <setting name="moduleName" value="LaukvikSQL" />
+      <envMap />
+      <setting name="rowsRange" value="" />
+      <RunnerSettings RunnerId="GaugeApplicationRunner" />
+      <ConfigurationWrapper RunnerId="GaugeApplicationRunner" />
+      <method />
+    </configuration>
+    <list size="4">
+      <item index="0" class="java.lang.String" itemvalue="Application.SQL" />
+      <item index="1" class="java.lang.String" itemvalue="Gauge Execution.Specifications" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.SQLTest.shoudListTables" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.All in LaukvikSQL" />
+    </list>
+    <recent_temporary>
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Application.SQL" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.All in LaukvikSQL" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.SQLTest.shoudListTables" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="TaskManager">
@@ -623,42 +759,64 @@
       <option name="number" value="Default" />
       <updated>1444305259767</updated>
       <workItem from="1444305260313" duration="726000" />
+      <workItem from="1444306456392" duration="5337000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="726000" />
+    <option name="totallyTimeSpent" value="6063000" />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904884" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904884" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904884" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32904884" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24964234" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964234" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964234" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -686,17 +844,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="MarkdownPreviewEditor">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="750">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/manifest.mf">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
@@ -705,15 +852,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LaukvikSQL.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/logging.properties">
+    <entry file="file://$PROJECT_DIR$/resources/logging.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -725,54 +864,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.42490372" vertical-offset="145" max-vertical-offset="924">
           <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
-          <folding>
-            <marker date="1444226198000" expanded="true" signature="-1:-1" placeholder="/.../" />
-            <marker date="1444226198000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444226198000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444226198000" expanded="false" signature="-1:-1" placeholder=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/swing/ConnectDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.35943517" vertical-offset="280" max-vertical-offset="1078">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1444201962000" expanded="true" signature="-1:-1" placeholder="/.../" />
-            <marker date="1444201962000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444201962000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444201962000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444201962000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444201962000" expanded="false" signature="-1:-1" placeholder="Generated Code" />
-            <marker date="1444201962000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444201962000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444201962000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444201962000" expanded="false" signature="-1:-1" placeholder="Look and feel setting code (optional)" />
-            <marker date="1444201962000" expanded="false" signature="-1:-1" placeholder="() → {" />
-            <marker date="1444201962000" expanded="false" signature="-1:-1" placeholder="(WindowAdapter) windowClosing(e) → {" />
-            <marker date="1444201962000" expanded="false" signature="-1:-1" placeholder="}" />
-            <marker date="1444201962000" expanded="false" signature="-1:-1" placeholder="}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -780,12 +872,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1444223944000" expanded="true" signature="-1:-1" placeholder="/.../" />
-            <marker date="1444223944000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1444223944000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444223944000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -793,15 +879,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.15019256" vertical-offset="117" max-vertical-offset="896">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1444206398000" expanded="true" signature="-1:-1" placeholder="/.../" />
-            <marker date="1444206398000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1444206398000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444206398000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444206398000" expanded="true" signature="-1:-1" placeholder="//..." />
-            <marker date="1444206398000" expanded="true" signature="-1:-1" placeholder="//..." />
-            <marker date="1444206398000" expanded="true" signature="-1:-1" placeholder="//..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -809,25 +886,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.54047" vertical-offset="1180" max-vertical-offset="1946">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1444227791000" expanded="true" signature="-1:-1" placeholder="/.../" />
-            <marker date="1444227791000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1444227791000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444227791000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444227791000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444227791000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444227791000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444227791000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444227791000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444227791000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444227791000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444227791000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444227791000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444227791000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444227791000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444227791000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444227791000" expanded="false" signature="-1:-1" placeholder=" }" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -835,10 +894,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1444293064000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1444293064000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -846,164 +902,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.85109115" vertical-offset="663" max-vertical-offset="1442">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1444152386000" expanded="true" signature="-1:-1" placeholder="/.../" />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1444152386000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444152386000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444152386000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444152386000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444152386000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444152386000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444152386000" expanded="false" signature="-1:-1" placeholder=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/swing/TreeModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.4685495" vertical-offset="1923" max-vertical-offset="2702">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="/.../" />
-            <marker date="1444303786000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444303786000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444303786000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444303786000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444303786000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444303786000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444303786000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444303786000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/swing/Viewer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.6396867" vertical-offset="1386" max-vertical-offset="3038">
-          <caret line="73" column="95" selection-start-line="73" selection-start-column="95" selection-end-line="73" selection-end-column="95" />
-          <folding>
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="/.../" />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder="Generated Code" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder="(evt) → { " />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder="(evt) → { " />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder="(evt) → { " />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder="(evt) → { " />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder="(evt) → { " />
-            <marker date="1444305363000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="//..." />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444305363000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/DatabaseConnectionNotFoundException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1444222537000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444222537000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444222537000" expanded="false" signature="-1:-1" placeholder=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/SQL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21409921" vertical-offset="4904" max-vertical-offset="5670">
-          <caret line="389" column="30" selection-start-line="389" selection-start-column="30" selection-end-line="389" selection-end-column="30" />
-          <folding>
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="/.../" />
-            <marker date="1444304043000" expanded="false" signature="-1:-1" placeholder="..." />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444304043000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444304043000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="//..." />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="false" signature="-1:-1" placeholder=" { " />
-            <marker date="1444304043000" expanded="false" signature="-1:-1" placeholder=" }" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
-            <marker date="1444304043000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1444304043000" expanded="false" signature="-1:-1" placeholder="() → { " />
-            <marker date="1444304043000" expanded="false" signature="-1:-1" placeholder=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.060333762" vertical-offset="47" max-vertical-offset="1106">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1410089502000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1410089502000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nbproject/build-impl.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32898173" vertical-offset="4004" max-vertical-offset="20216">
-          <caret line="304" column="34" selection-start-line="304" selection-start-column="34" selection-end-line="304" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -1012,7 +910,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1020,17 +917,219 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.35943517" vertical-offset="0" max-vertical-offset="779">
           <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.travis.yml">
+    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/DatabaseConnectionNotFoundException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="779">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/swing/ConnectDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.57389635" vertical-offset="373" max-vertical-offset="1582">
+          <caret line="64" column="36" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
+          <folding>
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder="/.../" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder="/unchecked/" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="Generated Code" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder="Look and feel setting code (optional)" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/mysql-connector-java-5.1.34-bin.jar!/com/mysql/jdbc/AssertionFailedException.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4347826" vertical-offset="0" max-vertical-offset="483">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/LaukvikSQL.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3761996" vertical-offset="0" max-vertical-offset="521">
+          <caret line="14" column="9" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/swing/Viewer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33267716" vertical-offset="643" max-vertical-offset="2814">
+          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+          <folding>
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder="/.../" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="/**...*/" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder="/unchecked/" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder="Generated Code" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" { " />
+            <marker date="1444306422000" expanded="false" signature="-1:-1" placeholder=" }" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="//..." />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1444306422000" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/org/laukvik/sql/SQLTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29558542" vertical-offset="0" max-vertical-offset="521">
+          <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="12" selection-end-column="5" />
+          <folding>
+            <element signature="e#162#163#0" expanded="true" />
+            <element signature="e#224#225#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/swing/TreeModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8330134" vertical-offset="476" max-vertical-offset="2520">
+          <caret line="95" column="9" selection-start-line="95" selection-start-column="9" selection-end-line="95" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.085365854" vertical-offset="0" max-vertical-offset="492">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/laukvik/sql/SQL.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3031496" vertical-offset="1666" max-vertical-offset="5572">
+          <caret line="171" column="40" selection-start-line="171" selection-start-column="40" selection-end-line="171" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>LaukvikSQL</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>AbsoluteLayout</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_laukviksql" default="compile.module.laukviksql">
+  <dirname property="module.laukviksql.basedir" file="${ant.file.module_laukviksql}"/>
+  
+  <property name="module.jdk.home.laukviksql" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.laukviksql" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.laukviksql" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.laukviksql" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="laukviksql.output.dir" value="undefined"/>
+  <property name="laukviksql.testoutput.dir" value="undefined"/>
+  
+  <path id="laukviksql.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="laukviksql.module.production.classpath">
+    <path refid="${module.jdk.classpath.laukviksql}"/>
+  </path>
+  
+  <path id="laukviksql.runtime.production.module.classpath"/>
+  
+  <path id="laukviksql.module.classpath">
+    <path refid="${module.jdk.classpath.laukviksql}"/>
+  </path>
+  
+  <path id="laukviksql.runtime.module.classpath"/>
+  
+  
+  <patternset id="excluded.from.module.laukviksql">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.laukviksql">
+    <patternset refid="excluded.from.module.laukviksql"/>
+  </patternset>
+  
+  
+  <target name="compile.module.laukviksql" depends="compile.module.laukviksql.production,compile.module.laukviksql.tests" description="Compile module LaukvikSQL"/>
+  
+  <target name="compile.module.laukviksql.production" depends="register.custom.compilers" description="Compile module LaukvikSQL; production classes"/>
+  
+  <target name="compile.module.laukviksql.tests" depends="register.custom.compilers,compile.module.laukviksql.production" description="compile module LaukvikSQL; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.laukviksql" description="cleanup module">
+    <delete dir="${laukviksql.output.dir}"/>
+    <delete dir="${laukviksql.testoutput.dir}"/>
+  </target>
+</project>

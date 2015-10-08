@@ -43,6 +43,8 @@ import org.laukvik.sql.swing.DatabaseConnectionFileFilter;
 import org.laukvik.sql.swing.Viewer;
 
 /**
+ * Helper class for database access
+ *
  *
  * @author Morten Laukvik
  */
@@ -86,22 +88,8 @@ public class SQL {
         return connection;
     }
 
-    /**
-     * SQL -tables crm
-     *
-     *  -display -user= -password= -connections -tables -functions -views
-     *
-     * @param args
-     */
     public static void main(String[] args) {
-        //args = new String[] {"-tables", "crm"};
-        //args = new String[] {"-views", "crm"};
-//        args = new String[] {"-functions", "crm"};
-        //args = new String[] {"-list"};
-        //args = new String[] {"crm"};
-        args = new String[] {"-views","hurra"};
-        args = new String[] {"-functions","hurra"};
-        args = new String[] {"hurra"};
+        //args = new String[]{ "-query=\"SELECT * FROM Article\"","default"};
 
         if (args.length == 0) {
             /* Assume graphical application with no arguments */
@@ -142,7 +130,9 @@ public class SQL {
                 } else if (args[0].equalsIgnoreCase("-views")){
                     SQL sql = new SQL(db);
                     sql.listViews();
-
+                } else if (args[0].startsWith("-query=")){
+                    SQL sql = new SQL(db);
+                    sql.listQuery(args[0].split("=")[1]);
                 }
             } catch (DatabaseConnectionNotFoundException e) {
                 System.out.println("Can't find database connection with name '" + args[1] + "'.");
@@ -174,7 +164,24 @@ public class SQL {
         System.out.println("  -functions         displays all user functions");
         System.out.println("  -views             displays all views");
         System.out.println("  -system            displays all system functions");
+        System.out.println("  -query=<COMMAND>   runs the query and displays the results");
     }
+
+    public void listQuery(String query){
+        try (ResultSet rs = getConnection().createStatement().executeQuery(query)) {
+            int cols = rs.getMetaData().getColumnCount();
+            while (rs.next()) {
+                for (int x=0; x<cols; x++){
+                    System.out.print( x > 0 ? "," : "" );
+                    System.out.print(rs.getObject(x+1));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void listTables(){
         for (Table t : findTables()){
@@ -292,7 +299,7 @@ public class SQL {
                 LOG.info("Function: " + rs.getString(1));
                 list.add(new Function(rs.getString(1)));
             }
-            list.add(new Function("asd"));
+            //list.add(new Function("asd"));
         } catch (Exception e) {
             e.printStackTrace();
         }

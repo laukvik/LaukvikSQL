@@ -32,17 +32,15 @@ import org.laukvik.sql.ddl.Table;
 import org.laukvik.sql.ddl.View;
 
 /**
+ * A model for the database connection and a renderer for tree nodes
  *
  * @author morten
  */
 public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tree.TreeModel {
 
     private static final Logger LOG = Logger.getLogger(TreeModel.class.getName());
-
     private final List<TreeModelListener> listeners;
-
     private SQL sql;
-
     private List root;
     private List<Table> tables;
     private List<View> views;
@@ -59,10 +57,15 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     public void setSQL(SQL sql) {
         this.sql = sql;
         root = new ArrayList<>();
-        tables = sql.findTables();
-        views = sql.findViews();
-        functions = sql.findUserFunctions();
-
+        if (sql == null){
+            tables = new ArrayList<>();
+            views = new ArrayList<>();
+            functions = new ArrayList<>();
+        } else {
+            tables = sql.findTables();
+            views = sql.findViews();
+            functions = sql.findUserFunctions();
+        }
         root.add(tables);
         root.add(views);
         root.add(functions);
