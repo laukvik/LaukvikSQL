@@ -27,4 +27,9 @@ public class BinaryColumn extends Column {
         super(name);
     }
 
+    @Override
+    public int getType() {
+        return Column.TYPE_BINARY;
+    }
+
 }

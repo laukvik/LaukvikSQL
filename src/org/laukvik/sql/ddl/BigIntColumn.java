@@ -23,8 +23,15 @@ package org.laukvik.sql.ddl;
  */
 public class BigIntColumn extends Column {
 
+
     public BigIntColumn(String name) {
         super(name);
     }
+
+    @Override
+    public int getType() {
+        return Column.TYPE_BIGINT;
+    }
+
 
 }

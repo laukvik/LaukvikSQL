@@ -17,6 +17,8 @@
  */
 package org.laukvik.sql.ddl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class Table implements Sqlable {
 
     private final String name;
     private final List<Column> columns;
+    private Schema schema;
 
     public Table(String name) {
         this.name = name;
@@ -53,6 +56,39 @@ public class Table implements Sqlable {
     public void addColumn(Column c) {
         columns.add(c);
     }
+
+    public String getInsertSQL( ResultSet rs ) throws SQLException{
+        StringBuilder b = new StringBuilder();
+        b.append("INSERT INTO "+ name +"(");
+        // Names
+        int x=0;
+        for (Column c: columns){
+            b.append(x > 0 ? "," : "");
+            b.append(c.getName());
+            x++;
+        }
+        b.append(") VALUES (");
+        // Values
+        int z = 0;
+        for (Column c : columns){
+            b.append(z > 0 ? "," : "");
+
+            Object value = rs.getObject(z + 1);
+
+            if (rs.wasNull()){
+                b.append("NULL");
+
+            } else {
+                b.append( c.getFormatted(value ) );
+            }
+
+
+            z++;
+        }
+        b.append(");");
+        return b.toString();
+    }
+
 
     public String getDDL() {
         StringBuilder b = new StringBuilder();

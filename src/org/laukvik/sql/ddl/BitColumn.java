@@ -27,4 +27,9 @@ public class BitColumn extends Column {
         super(name);
     }
 
+    @Override
+    public int getType() {
+        return Column.TYPE_BIT;
+    }
+
 }

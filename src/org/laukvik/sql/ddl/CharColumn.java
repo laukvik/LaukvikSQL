@@ -27,4 +27,17 @@ public class CharColumn extends Column {
         super(name);
     }
 
+    @Override
+    public int getType() {
+        return Column.TYPE_CHAR;
+    }
+
+    public String getFormatted( Object value ){
+        if (value == null){
+            return "NULL";
+        } else {
+            return "'" + value + "'";
+        }
+    }
+
 }

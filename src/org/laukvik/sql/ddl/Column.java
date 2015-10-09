@@ -23,11 +23,31 @@ package org.laukvik.sql.ddl;
  */
 public abstract class Column {
 
-    /**
-     * -7	BIT -6	TINYINT -5	BIGINT -4	LONGVARBINARY -3	VARBINARY -2	BINARY -1
-     * LONGVARCHAR 0	NULL 1	CHAR 2	NUMERIC 3	DECIMAL 4	INTEGER 5	SMALLINT 6
-     * FLOAT 7	REAL 8	DOUBLE 12	VARCHAR 91	DATE 92	TIME 93	TIMESTAMP 1111 OTHER
-     */
+
+    public final static int TYPE_BIT                = -7;
+    public final static int TYPE_TINYINT            = -6;
+    public final static int TYPE_BIGINT             = -5;
+    public final static int TYPE_LONGVARBINARY      = -4;
+    public final static int TYPE_VARBINARY          = -3;
+    public final static int TYPE_BINARY             = -2;
+    public final static int TYPE_LONGVARCHAR        = -1;
+
+    public final static int TYPE_CHAR               = 1;
+    public final static int TYPE_NUMERIC            = 2;
+    public final static int TYPE_DECIMAL            = 3;
+    public final static int TYPE_INTEGER            = 4;
+    public final static int TYPE_SMALLINT           = 5;
+    public final static int TYPE_FLOAT              = 6;
+    public final static int TYPE_REAL               = 7;
+    public final static int TYPE_DOUBLE             = 8;
+    public final static int TYPE_VARCHAR            = 12;
+
+    public final static int TYPE_DATE               = 91;
+    public final static int TYPE_TIME               = 92;
+    public final static int TYPE_TIMESTAMP          = 93;
+    public final static int TYPE_OTHER              = 1111;
+
+
     private String name;
     private boolean allowNulls;
     private Table table;
@@ -37,47 +57,49 @@ public abstract class Column {
         this.name = name;
     }
 
+    public abstract int getType();
+
     public static Column parse(int columnType, String name) {
         switch (columnType) {
-            case -7:
+            case TYPE_BIT:
                 return new BitColumn(name);
-            case -6:
+            case TYPE_TINYINT:
                 return new TinyIntColumn(name);
-            case -5:
+            case TYPE_BIGINT:
                 return new BigIntColumn(name);
-            case -4:
+            case TYPE_LONGVARBINARY:
                 return new LongVarBinaryColumn(name);
-            case -3:
+            case TYPE_VARBINARY:
                 return new VarBinaryColumn(name);
-            case -2:
+            case TYPE_BINARY:
                 return new BinaryColumn(name);
-            case -1:
+            case TYPE_LONGVARCHAR:
                 return new LongVarCharColumn(name);
-            case 1:
+            case TYPE_CHAR:
                 return new CharColumn(name);
-            case 2:
+            case TYPE_NUMERIC:
                 return new NumericColumn(name);
-            case 3:
+            case TYPE_DECIMAL:
                 return new DecimalColumn(name);
-            case 4:
+            case TYPE_INTEGER:
                 return new IntegerColumn(name);
-            case 5:
+            case TYPE_SMALLINT:
                 return new SmallIntColumn(name);
-            case 6:
+            case TYPE_FLOAT:
                 return new FloatColumn(name);
-            case 7:
+            case TYPE_REAL:
                 return new RealColumn(name);
-            case 8:
+            case TYPE_DOUBLE:
                 return new DoubleColumn(name);
-            case 12:
+            case TYPE_VARCHAR:
                 return new VarCharColumn(name);
-            case 91:
+            case TYPE_DATE:
                 return new DateColumn(name);
-            case 92:
+            case TYPE_TIME:
                 return new TimeColumn(name);
-            case 93:
+            case TYPE_TIMESTAMP:
                 return new TimestampColumn(name);
-            case 1111:
+            case TYPE_OTHER:
                 return new OtherColumn(name);
         }
         throw new IllegalArgumentException("ColumnType: " + columnType);
@@ -113,7 +135,7 @@ public abstract class Column {
     }
 
     public String getDDL() {
-        return getColumnName() + " (" + size + ")" + (allowNulls ? "" : " NOT NULL");
+        return getColumnName() + "" + (allowNulls ? "" : " NOT NULL");
     }
 
     public int getSize() {
@@ -122,6 +144,16 @@ public abstract class Column {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    /**
+     * Returns the SQL formatted value of the object
+     *
+     * @param value
+     * @return
+     */
+    public String getFormatted( Object value ){
+        return value.toString();
     }
 
 }

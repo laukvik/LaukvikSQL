@@ -17,10 +17,7 @@
  */
 package org.laukvik.sql;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -130,6 +127,9 @@ public class SQL {
                 } else if (args[0].equalsIgnoreCase("-views")){
                     SQL sql = new SQL(db);
                     sql.listViews();
+                } else if (args[0].equalsIgnoreCase("-export")){
+                    SQL sql = new SQL(db);
+                    sql.export();
                 } else if (args[0].startsWith("-query=")){
                     SQL sql = new SQL(db);
                     sql.listQuery(args[0].split("=")[1]);
@@ -165,6 +165,52 @@ public class SQL {
         System.out.println("  -views             displays all views");
         System.out.println("  -system            displays all system functions");
         System.out.println("  -query=<COMMAND>   runs the query and displays the results");
+        System.out.println("  -export            creates scripts used to import in other databases");
+        System.out.println("  -exportfile        creates scripts file used to import in other databases");
+    }
+
+    public void exportFile( File file ){
+        try(FileOutputStream out = new FileOutputStream( file )) {
+            List<Table> tables = findTables();
+            for (int z=0; z<tables.size(); z++){
+                Table table = tables.get(z);
+                out.write( table.getDDL().getBytes() );
+                try (ResultSet rs = getConnection().createStatement().executeQuery("SELECT * FROM " + table.getName() )) {
+                    int cols = rs.getMetaData().getColumnCount();
+                    while (rs.next()) {
+                        out.write( table.getInsertSQL(rs).getBytes() );
+
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void export(){
+        List<Table> tables = findTables();
+        for (int z=0; z<tables.size(); z++){
+            Table table = tables.get(z);
+
+
+
+            System.out.println(table.getDDL() );
+            try (ResultSet rs = getConnection().createStatement().executeQuery("SELECT * FROM " + table.getName() )) {
+                int cols = rs.getMetaData().getColumnCount();
+                while (rs.next()) {
+                    //System.out.println(table.getInsertSQL(rs));
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     public void listQuery(String query){
@@ -173,7 +219,7 @@ public class SQL {
             while (rs.next()) {
                 for (int x=0; x<cols; x++){
                     System.out.print( x > 0 ? "," : "" );
-                    System.out.print(rs.getObject(x+1));
+                    System.out.print(rs.getObject(x + 1));
                 }
                 System.out.println();
             }
@@ -231,6 +277,7 @@ public class SQL {
     }
 
     public List<Table> findTables() {
+        //LOG.finest("Finding tables...");
         List<Table> tables = new ArrayList<>();
         try {
             DatabaseMetaData md = getConnection().getMetaData();
@@ -238,8 +285,8 @@ public class SQL {
             try (ResultSet rs = md.getTables(null, null, "%", types);) {
                 while (rs.next()) {
                     Table t = new Table(rs.getString(3));
+                    LOG.fine("Table: " + t.getName());
                     tables.add(t);
-                    //System.out.println("table: " + t);
                 }
             } catch (SQLException e) {
             }
@@ -249,13 +296,29 @@ public class SQL {
                 while (rs.next()) {
                     String columnName = rs.getString(4);
                     int columnType = rs.getInt(5);
+                    int size = rs.getInt(7);
                     Column c = Column.parse(columnType, columnName);
-                    c.setSize(rs.getInt(7));
+                    c.setSize(size);
+
+                    c.setAllowNulls(rs.getInt("NULLABLE") == 1);
                     t.addColumn(c);
-                    //System.out.println("Column: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7));
+
+                    //LOG.info("Column: " + t.getName() );
+                    //System.out.println("Column: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7) + " " + rs.getString(8));
                 }
-//                System.out.println(t.getDDL());
             }
+            // Attributes
+            //for (Table t : tables) {
+            {
+                ResultSet rs = md.getAttributes(null,null,null,null);
+                while (rs.next()) {
+                    System.out.println("Attribute: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7) + " " + rs.getString(8));
+                }
+            }
+//            }
+
+
+
             // Primary keys
             for (Table t : tables) {
                 ResultSet rs = md.getPrimaryKeys(null, null, t.getName());

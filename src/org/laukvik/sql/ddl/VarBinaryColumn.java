@@ -29,4 +29,9 @@ public class VarBinaryColumn extends Column {
         super(name);
     }
 
+    @Override
+    public int getType() {
+        return Column.TYPE_VARBINARY;
+    }
+
 }

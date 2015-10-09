@@ -27,4 +27,9 @@ public class RealColumn extends Column {
         super(name);
     }
 
+    @Override
+    public int getType() {
+        return Column.TYPE_REAL;
+    }
+
 }

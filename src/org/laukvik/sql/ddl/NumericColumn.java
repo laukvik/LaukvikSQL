@@ -27,4 +27,9 @@ public class NumericColumn extends Column {
         super(name);
     }
 
+    @Override
+    public int getType() {
+        return Column.TYPE_NUMERIC;
+    }
+
 }

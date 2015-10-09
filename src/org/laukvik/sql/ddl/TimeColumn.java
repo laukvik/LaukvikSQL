@@ -29,4 +29,17 @@ public class TimeColumn extends Column {
         super(name);
     }
 
+    @Override
+    public int getType() {
+        return Column.TYPE_TIME;
+    }
+
+    public String getFormatted( Object value ){
+        if (value == null){
+            return "NULL";
+        } else {
+            return "'" + value + "'";
+        }
+    }
+
 }

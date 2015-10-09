@@ -27,4 +27,13 @@ public class DoubleColumn extends Column {
         super(name);
     }
 
+    @Override
+    public int getType() {
+        return Column.TYPE_DOUBLE;
+    }
+
+    public String getDDL() {
+        return "DOUBLE PRECISION" + "" + (isAllowNulls() ? "" : " NOT NULL");
+    }
+
 }

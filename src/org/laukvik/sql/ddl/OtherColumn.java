@@ -27,4 +27,9 @@ public class OtherColumn extends Column {
         super(name);
     }
 
+    @Override
+    public int getType() {
+        return Column.TYPE_OTHER;
+    }
+
 }
