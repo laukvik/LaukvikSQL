@@ -30,12 +30,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.laukvik.sql.ddl.Column;
-import org.laukvik.sql.ddl.DatabaseConnection;
-import org.laukvik.sql.ddl.Function;
-import org.laukvik.sql.ddl.Schema;
-import org.laukvik.sql.ddl.Table;
-import org.laukvik.sql.ddl.View;
+import org.laukvik.sql.ddl.*;
 import org.laukvik.sql.swing.DatabaseConnectionFileFilter;
 import org.laukvik.sql.swing.Viewer;
 
@@ -130,16 +125,26 @@ public class SQL {
                 } else if (args[0].equalsIgnoreCase("-export")){
                     SQL sql = new SQL(db);
                     sql.export();
+                } else if (args[0].startsWith("-export=")){
+                    SQL sql = new SQL(db);
+                    String filename = args[0].split("=")[1];
+                    sql.exportFile(new File(filename));
+
+                } else if (args[0].startsWith("-import=")){
+                    SQL sql = new SQL(db);
+                    String filename = args[0].split("=")[1];
+                    sql.importFile(new File(filename));
+
                 } else if (args[0].startsWith("-query=")){
                     SQL sql = new SQL(db);
                     sql.listQuery(args[0].split("=")[1]);
                 }
             } catch (DatabaseConnectionNotFoundException e) {
-                System.out.println("Can't find database connection with name '" + args[1] + "'.");
+                System.err.println("Can't find database connection with name '" + args[1] + "'.");
             } catch (SQLException e) {
-                System.out.println("Could not connect to database connection with name '" + args[1] + "'.");
+                System.err.println("Could not connect to database connection with name '" + args[1] + "'. "  + e.getMessage());
             } catch (IOException e) {
-                System.out.println("Could not read connection settings with name '" + args[1] + "'.");
+                System.err.println("Could not read connection settings with name '" + args[1] + "'.");
             }
 
         } else {
@@ -166,25 +171,51 @@ public class SQL {
         System.out.println("  -system            displays all system functions");
         System.out.println("  -query=<COMMAND>   runs the query and displays the results");
         System.out.println("  -export            creates scripts used to import in other databases");
-        System.out.println("  -exportfile        creates scripts file used to import in other databases");
+        System.out.println("  -export=file       creates scripts file used to import in other databases");
+        System.out.println("  -import=file       runs scrips from file");
+    }
+
+    /**
+     *
+     * @param file
+     */
+    public void importFile( File file ){
+        LOG.info("Importing database to file: " + file.getAbsolutePath() );
+        System.out.println("Importing database to file: " + file.getAbsolutePath() );
+        StringBuilder b = new StringBuilder();
+        byte [] buffer = new byte[2048];
+
+        try(FileInputStream in = new FileInputStream( file )) {
+            in.read(buffer);
+            b.append(buffer);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void exportFile( File file ){
+        LOG.info("Exporting database to file: " + file.getAbsolutePath() );
         try(FileOutputStream out = new FileOutputStream( file )) {
             List<Table> tables = findTables();
             for (int z=0; z<tables.size(); z++){
                 Table table = tables.get(z);
+                System.out.print(table.getName() + ":");
                 out.write( table.getDDL().getBytes() );
                 try (ResultSet rs = getConnection().createStatement().executeQuery("SELECT * FROM " + table.getName() )) {
                     int cols = rs.getMetaData().getColumnCount();
                     while (rs.next()) {
                         out.write( table.getInsertSQL(rs).getBytes() );
-
+                        out.write("\n".getBytes());
                     }
+                    System.out.print("#");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                System.out.println();
             }
+            out.flush();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -200,7 +231,7 @@ public class SQL {
             try (ResultSet rs = getConnection().createStatement().executeQuery("SELECT * FROM " + table.getName() )) {
                 int cols = rs.getMetaData().getColumnCount();
                 while (rs.next()) {
-                    //System.out.println(table.getInsertSQL(rs));
+                    System.out.println(table.getInsertSQL(rs));
 
                 }
             } catch (SQLException e) {
@@ -272,58 +303,72 @@ public class SQL {
         return items;
     }
 
+    /**
+     * Find all tables
+     *
+     * @return
+     */
     public List<Table> findTables() {
         //LOG.finest("Finding tables...");
         List<Table> tables = new ArrayList<>();
         try {
             DatabaseMetaData md = getConnection().getMetaData();
-            // Find tables
+            /**
+             * Find tables
+             *
+             */
             String[] types = {"TABLE"};
             try (ResultSet rs = md.getTables(null, null, "%", types);) {
                 while (rs.next()) {
                     Table t = new Table(rs.getString(3));
                     LOG.fine("Table: " + t.getName());
                     tables.add(t);
-
-                    for (int z=0; z<rs.getMetaData().getColumnCount(); z++){
-                        //System.out.print( " " + rs.getMetaData().getColumnName(z+1) );
-                    }
-                    //System.out.println();
                 }
             } catch (SQLException e) {
             }
-            // Column definitions
+            /**
+             * Column definitions
+             *
+             */
             for (Table t : tables) {
                 ResultSet rs = md.getColumns(null, null, t.getName(), null);
                 while (rs.next()) {
-                    for (int z=0; z<rs.getMetaData().getColumnCount(); z++){
-                        //System.out.print( " " + rs.getMetaData().getColumnName(z+1) );
-                    }
-
                     String columnName = rs.getString(4);
                     int columnType = rs.getInt(5);
                     int size = rs.getInt(7);
                     Column c = Column.parse(columnType, columnName);
                     c.setSize(size);
                     c.setComments( rs.getString("REMARKS"));
-
-
+                    c.setAutoGenerated(rs.getBoolean("IS_GENERATEDCOLUMN"));
+                    c.setAutoIncrement(rs.getBoolean("IS_AUTOINCREMENT"));
                     c.setAllowNulls(rs.getInt("NULLABLE") == 1);
+                    c.setDefaultValue(rs.getString("COLUMN_DEF"));
                     t.addColumn(c);
 
-                    //LOG.info("Column: " + t.getName() );
+                    //LOG.info("Column: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7) + " " + rs.getString(8));
 
-                    //System.out.println("Column: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7) + " " + rs.getString(8));
                 }
             }
-            // Attributes
-            //for (Table t : tables) {
-            {
-                ResultSet rs = md.getAttributes(null,null,null,null);
+
+            /**
+             * Foreign Keys
+             *
+             */
+            for (Table t : tables){
+                ResultSet rs = md.getImportedKeys(null, null, t.getName());
                 while (rs.next()) {
-                    //System.out.println("Attribute: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7) + " " + rs.getString(8));
+                    LOG.finest("Looking for foreign key for table '" + t.getName() + "': " + rs.getString("FKTABLE_NAME")+"."+rs.getString("FKCOLUMN_NAME") + " " + rs.getString("PKTABLE_NAME")+"."+rs.getString("PKCOLUMN_NAME"));
+                    Column c = t.findColumnByName(rs.getString("FKCOLUMN_NAME"));
+                    if (c == null){
+
+                    } else {
+                        c.setForeignKey( new ForeignKey( rs.getString("PKTABLE_NAME"), rs.getString("PKCOLUMN_NAME")));
+                    }
+
+
                 }
             }
+
 //            }
 
 
@@ -333,7 +378,7 @@ public class SQL {
                 ResultSet rs = md.getPrimaryKeys(null, null, t.getName());
                 while (rs.next()) {
                     //t.setPrimaryKey(rs.getString(3), true);
-                    LOG.info("PrimaryKey: " + rs.getString(3) + " " + rs.getString(4));
+                    LOG.fine("PrimaryKey: " + rs.getString(3) + " " + rs.getString(4));
                     Column c = t.findColumnByName(rs.getString(4));
                     if (c != null){
                         c.setPrimaryKey(true);

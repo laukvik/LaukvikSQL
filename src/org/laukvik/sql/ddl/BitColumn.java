@@ -32,4 +32,10 @@ public class BitColumn extends Column {
         return Column.TYPE_BIT;
     }
 
+    public String getFormatted( Object value ){
+        //System.out.println("Bit: " + value );
+        boolean v = (boolean)value;
+        return "B'" + (v ? "1": "0") + "'";
+    }
+
 }

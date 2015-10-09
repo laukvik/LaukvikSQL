@@ -102,6 +102,24 @@ public class Table implements Sqlable {
             b.append(c.getName());
             b.append("\t");
             b.append(c.getDDL());
+            if (c.getForeignKey() == null){
+
+            } else {
+                b.append(" REFERENCES ");
+                b.append( c.getForeignKey().getTable() );
+                b.append("(");
+                b.append( c.getForeignKey().getColumn() );
+                b.append(")");
+            }
+
+            if (c.getDefaultValue() != null){
+                b.append(" DEFAULT '");
+                b.append( c.getDefaultValue());
+                b.append("'");
+            }
+            if (c.isAutoIncrement()){
+                //b.append(" AUTOINCREMENT");
+            }
             x++;
         }
         x=0;
