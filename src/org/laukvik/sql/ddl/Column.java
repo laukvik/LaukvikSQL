@@ -52,9 +52,37 @@ public abstract class Column {
     private boolean allowNulls;
     private Table table;
     private int size;
+    private String comments;
+    private boolean primaryKey;
+    private ForeignKey foreignKey;
+
 
     public Column(String name) {
         this.name = name;
+    }
+
+    public ForeignKey getForeignKey() {
+        return foreignKey;
+    }
+
+    public void setForeignKey(ForeignKey foreignKey) {
+        this.foreignKey = foreignKey;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public boolean isPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(boolean primaryKey) {
+        this.primaryKey = primaryKey;
     }
 
     public abstract int getType();

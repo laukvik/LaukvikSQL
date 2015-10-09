@@ -104,10 +104,50 @@ public class Table implements Sqlable {
             b.append(c.getDDL());
             x++;
         }
+        x=0;
+
+        List<Column> primaryKeys = findPrimaryKeys();
+        if (primaryKeys.isEmpty()){
+
+        } else {
+            b.append(",\n\tPRIMARY KEY(");
+            for (Column c : primaryKeys) {
+                if (x == 0){
+
+                } else {
+                    b.append(",");
+                }
+
+                b.append(c.getName());
+            }
+            b.append(")");
+        }
+
+
+
+
         b.append("\n");
         b.append(");");
         b.append("\n");
         return b.toString();
     }
 
+    public List<Column> findPrimaryKeys(){
+        List<Column> cols = new ArrayList<>();
+        for (Column c : columns){
+            if (c.isPrimaryKey()){
+                cols.add(c);
+            }
+        }
+        return cols;
+    }
+
+    public Column findColumnByName(String name) {
+        for (Column c : columns){
+            if (c.getName().equalsIgnoreCase(name)){
+                return c;
+            }
+        }
+        return null;
+    }
 }

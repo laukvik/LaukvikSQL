@@ -196,9 +196,6 @@ public class SQL {
         List<Table> tables = findTables();
         for (int z=0; z<tables.size(); z++){
             Table table = tables.get(z);
-
-
-
             System.out.println(table.getDDL() );
             try (ResultSet rs = getConnection().createStatement().executeQuery("SELECT * FROM " + table.getName() )) {
                 int cols = rs.getMetaData().getColumnCount();
@@ -209,7 +206,6 @@ public class SQL {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -281,12 +277,18 @@ public class SQL {
         List<Table> tables = new ArrayList<>();
         try {
             DatabaseMetaData md = getConnection().getMetaData();
+            // Find tables
             String[] types = {"TABLE"};
             try (ResultSet rs = md.getTables(null, null, "%", types);) {
                 while (rs.next()) {
                     Table t = new Table(rs.getString(3));
                     LOG.fine("Table: " + t.getName());
                     tables.add(t);
+
+                    for (int z=0; z<rs.getMetaData().getColumnCount(); z++){
+                        //System.out.print( " " + rs.getMetaData().getColumnName(z+1) );
+                    }
+                    //System.out.println();
                 }
             } catch (SQLException e) {
             }
@@ -294,16 +296,23 @@ public class SQL {
             for (Table t : tables) {
                 ResultSet rs = md.getColumns(null, null, t.getName(), null);
                 while (rs.next()) {
+                    for (int z=0; z<rs.getMetaData().getColumnCount(); z++){
+                        //System.out.print( " " + rs.getMetaData().getColumnName(z+1) );
+                    }
+
                     String columnName = rs.getString(4);
                     int columnType = rs.getInt(5);
                     int size = rs.getInt(7);
                     Column c = Column.parse(columnType, columnName);
                     c.setSize(size);
+                    c.setComments( rs.getString("REMARKS"));
+
 
                     c.setAllowNulls(rs.getInt("NULLABLE") == 1);
                     t.addColumn(c);
 
                     //LOG.info("Column: " + t.getName() );
+
                     //System.out.println("Column: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7) + " " + rs.getString(8));
                 }
             }
@@ -312,7 +321,7 @@ public class SQL {
             {
                 ResultSet rs = md.getAttributes(null,null,null,null);
                 while (rs.next()) {
-                    System.out.println("Attribute: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7) + " " + rs.getString(8));
+                    //System.out.println("Attribute: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7) + " " + rs.getString(8));
                 }
             }
 //            }
@@ -323,7 +332,13 @@ public class SQL {
             for (Table t : tables) {
                 ResultSet rs = md.getPrimaryKeys(null, null, t.getName());
                 while (rs.next()) {
-                    t.setPrimaryKey(rs.getString(3), true);
+                    //t.setPrimaryKey(rs.getString(3), true);
+                    LOG.info("PrimaryKey: " + rs.getString(3) + " " + rs.getString(4));
+                    Column c = t.findColumnByName(rs.getString(4));
+                    if (c != null){
+                        c.setPrimaryKey(true);
+                    }
+
                     //System.out.println("Column: " + rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " ");
                 }
                 //System.out.println(t.getDDL());
