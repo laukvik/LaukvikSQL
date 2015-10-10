@@ -17,6 +17,9 @@
  */
 package org.laukvik.sql.ddl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author morten
@@ -24,9 +27,59 @@ package org.laukvik.sql.ddl;
 public class Schema implements Sqlable {
 
     private final String name;
+    private final List<Table> tables;
+    private final List<View> views;
+    private final List<Function> functions;
+
+    public Schema() {
+        this("");
+    }
 
     public Schema(String name) {
         this.name = name;
+        tables = new ArrayList<>();
+        views = new ArrayList<>();
+        functions = new ArrayList<>();
+    }
+
+    public boolean isDefault(){
+        return name.isEmpty();
+    }
+
+    public void addFunction(Function function){
+        functions.add(function);
+    }
+
+    public void removeFunction(Function function){
+        functions.remove(function);
+    }
+
+    public List<Function> getFunctions() {
+        return functions;
+    }
+
+    public void addView(View view){
+        views.add(view);
+    }
+
+    public void removeView(View view){
+        views.remove(view);
+    }
+
+    public List<View> getViews() {
+        return views;
+    }
+
+    public void addTable(Table table){
+        tables.add(table);
+    }
+
+    public void removeTable(Table table){
+        tables.remove(table);
+    }
+
+    public List<Table> getTables() {
+        return tables;
     }
 
     public String getName() {

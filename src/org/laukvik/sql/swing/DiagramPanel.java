@@ -98,7 +98,9 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
             int tableWidth   = 150;
             int padding      = 20;
 
-            int tablesPrRow  = panelWidth / tableWidth;
+            int tablesPrRow  = 5;
+
+            //System.out.println( index + "=" + (index % tablesPrRow));
 
             locations.get(index).setLocation((index % tablesPrRow)*200, (index / tablesPrRow)*200);
             //locations.add(new Point((index % tablesPrRow)*200, (index / tablesPrRow)*200 ));

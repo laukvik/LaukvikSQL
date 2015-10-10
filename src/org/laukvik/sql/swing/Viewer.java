@@ -24,9 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import org.laukvik.sql.SQL;
-import org.laukvik.sql.ddl.Function;
-import org.laukvik.sql.ddl.Sqlable;
-import org.laukvik.sql.ddl.Table;
+import org.laukvik.sql.ddl.*;
 
 /**
  *
@@ -89,15 +87,30 @@ public class Viewer extends javax.swing.JFrame {
         tree.setCellRenderer(treeModel);
         tree.setModel(treeModel);
 
-
         diagramPanel.removeAll();
-        for (Table t : sql.findTables()){
+        for (Table t : sql.getSchema().getTables()){
             diagramPanel.addTable(t);
         }
         diagramPanel.autoLayout();
     }
 
+    public void openDiagram(){
+        mainSplitPane.setRightComponent( diagramScroll );
+        mainSplitPane.setDividerLocation( DEFAULT_TREE_WIDTH );
+    }
+
+    public void openFunction(Function function){
+        LOG.info("Function: " + function.getName());
+    }
+
+    public void openView(View view){
+        LOG.info("View: " + view.getName());
+    }
+
     public void openTable(Table t){
+        LOG.info("Table: " + t.getName());
+        mainSplitPane.setRightComponent( tableSplitPane );
+        mainSplitPane.setDividerLocation( DEFAULT_TREE_WIDTH );
         // Open query
         queryPane.setText("SELECT * FROM " + t.getName());
         // Run query
@@ -124,14 +137,15 @@ public class Viewer extends javax.swing.JFrame {
 
     public void openSQL(Sqlable sqlable) {
         if (sqlable instanceof Table) {
+            /* Table items */
             Table t = (Table) sqlable;
             openTable(t);
-            mainSplitPane.setRightComponent( tableSplitPane );
-            mainSplitPane.setDividerLocation( DEFAULT_TREE_WIDTH );
+
         } else if (sqlable instanceof Function){
+            /* Function items */
         } else {
-            mainSplitPane.setRightComponent( diagramScroll );
-            mainSplitPane.setDividerLocation( DEFAULT_TREE_WIDTH );
+            /* Other items */
+            openDiagram();
         }
     }
 
@@ -340,22 +354,31 @@ public class Viewer extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
-
         if (evt.getPath() != null) {
             Object o = evt.getPath().getLastPathComponent();
-            if (o instanceof Sqlable) {
-                Sqlable s = (Sqlable) o;
-                openSQL(s);
+
+            if (o instanceof Schema) {
+                openDiagram();
+
+            } else if (o instanceof Table) {
+                openTable((Table) o);
+
+            } else if (o instanceof View){
+                openView( (View)o );
+
+            } else if (o instanceof Function){
+                openFunction((Function) o);
+
             } else {
-                System.err.println("ROT?");
-                openSQL(null);
+
+
             }
         }
 
     }//GEN-LAST:event_jTree1ValueChanged
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-        // TODO add your handling code here:
+
 
     }//GEN-LAST:event_openMenuItemActionPerformed
 

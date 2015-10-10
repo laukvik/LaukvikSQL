@@ -21,13 +21,14 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 import org.laukvik.sql.SQL;
 import org.laukvik.sql.ddl.Function;
+import org.laukvik.sql.ddl.Schema;
 import org.laukvik.sql.ddl.Table;
 import org.laukvik.sql.ddl.View;
 
@@ -41,152 +42,133 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     private static final Logger LOG = Logger.getLogger(TreeModel.class.getName());
     private final List<TreeModelListener> listeners;
     private SQL sql;
-    private final List root;
-    private final List<Table> tables;
-    private final List<View> views;
-    private final List<Function> functions;
-
+    private Schema schema;
+    private String tables;
+    private String views;
+    private String functions;
+    private Icon ICON_TABLE = ResourceManager.getIcon("table.gif" );
+    private Icon ICON_DATABASE = ResourceManager.getIcon("db.gif" );
+    private Icon ICON_VIEW = ResourceManager.getIcon("view.gif" );
+    private Icon ICON_FUNCTION = ResourceManager.getIcon("function.gif" );
 
     public TreeModel(SQL sql) {
         super();
         listeners = new ArrayList<>();
-        root = new ArrayList<>();
-        tables = new ArrayList<>();
-        views = new ArrayList<>();
-        functions = new ArrayList<>();
-
-        root.add(functions);
-        root.add(tables);
-
-
-        root.add(views);
+        schema = null;
+        tables = "Tables";
+        views = "Views";
+        functions = "Functions";
         setSQL(sql);
     }
 
     public void setSQL(SQL sql) {
         this.sql = sql;
-
-        tables.clear();
-        views.clear();
-        functions.clear();
-
-        if (sql != null){
-            tables.addAll( sql.findTables() );
-            views.addAll( sql.findViews() );
-            functions.addAll( sql.findUserFunctions());
-        }
-
+        schema = sql.getSchema();
     }
 
     @Override
     public Object getRoot() {
-        return root;
+        return schema;
+    }
+
+
+    @Override
+    public int getChildCount(Object parent) {
+        if (parent == schema){
+            return 3;
+
+        } else if (parent == tables){
+            return schema.getTables().size();
+
+        } else if (parent == views){
+            return schema.getViews().size();
+
+        } else if (parent == functions){
+            return schema.getFunctions().size();
+
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public Object getChild(Object parent, int index) {
-        LOG.finest("getChild: " + parent + " index: " + index);
-        if (parent instanceof List){
-            return ((List) parent).get(index);
+        LOG.info("getChild: " + parent + " index: " + index);
+        if (parent == schema){
+            switch (index){
+                case 0 : return tables;
+                case 1 : return views;
+                case 2 : return functions;
+                default : return null;
+            }
+        } else if (parent == tables){
+            return schema.getTables().get(index);
+
+        } else if (parent == views){
+            return schema.getViews().get(index);
+
+        } else if (parent == functions){
+            return schema.getFunctions().get(index);
+
         } else {
             return 0;
         }
-        /*
-        if (parent == root){
-            return root.get(index);
-
-        } else if (parent == tables){
-            return tables.get(index);
-
-        } if (parent == functions){
-            return functions.get(index);
-
-        } else if (parent == views){
-            return views.get(index);
-
-        } else {
-            return null;
-        }*/
-    }
-
-    @Override
-    public int getChildCount(Object parent) {
-        if (parent instanceof List){
-            return ((List) parent).size();
-        } else {
-            return 0;
-        }
-        /*
-        if (parent == root){
-            return root.size();
-
-        } else if (parent == tables){
-            return tables.size();
-
-        } if (parent == functions){
-            return functions.size();
-
-        } else if (parent == views){
-            return views.size();
-
-        } else {
-            return -1;
-        }*/
     }
 
     @Override
     public int getIndexOfChild(Object parent, Object node) {
-        LOG.info("getIndexOfChild: " + parent + " child: " + node);
-        if (parent instanceof List){
-            List list = (List)parent;
-            return list.indexOf(node);
+        //LOG.info("getIndexOfChild: " + parent + " child: " + node);
+        if (parent == schema){
+
+
+            if (node == tables){
+                return 0;
+            } else if (node == views){
+                return 1;
+            } else if (node == functions){
+                return 2;
+            } else {
+                return -1;
+            }
+
+
+        } else if (parent == tables){
+            return schema.getTables().indexOf( node );
+
+        } else if (parent == views){
+            return schema.getViews().indexOf(node);
+
+        } else if (parent == functions){
+            return schema.getFunctions().indexOf( node );
+
         } else {
             return 0;
         }
-        /*
-        if (parent == tables){
-            return tables.indexOf( (Table)node );
-
-        } if (parent == functions){
-            return functions.indexOf((Function) node);
-
-        } else if (parent == views) {
-            return views.indexOf((View) node);
-
-        } else if (parent == root){
-            return root.indexOf(node);
-
-        } else {
-            LOG.warning("Unkown: " + parent);
-            return 0;
-        }*/
     }
 
     @Override
-    public boolean isLeaf(Object node) {
-        return !(node instanceof List);
+    public boolean isLeaf(Object parent) {
 
-        /*
-        if (node == root) {
-            LOG.info("Root: is not leaf" );
+        if (parent == schema){
+            LOG.info("Schema.leaf: false" );
             return false;
 
-        } else if (node == tables){
-            LOG.info("Tables: is not leaf" );
+        } else if (parent == tables){
+            LOG.info("Schema.tables: false" );
             return false;
 
-        } if (node == functions){
-            LOG.info("Functions: is not leaf" );
+        } else if (parent == views){
+            LOG.info("Schema.views: false" );
             return false;
 
-        } else if (node == views){
-            LOG.info("Views: is not leaf" );
+        } else if (parent == functions){
+            LOG.info("Schema.functions: false" );
             return false;
 
         } else {
-            LOG.warning(node + ": is not leaf");
+            LOG.info("Schema.leaf: " + parent );
             return true;
-        }*/
+        }
     }
 
     @Override
@@ -213,18 +195,32 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
 
         setOpaque(true);
 
-        if (value == root) {
-            setText("Rot");
 
-        } else if (value == views) {
+        if (value == schema) {
+            setIcon( ICON_DATABASE );
+            setText(schema.isDefault() ? "default" : schema.getName());
+
+        } else if (value == schema.getViews()) {
             setText("Views");
 
-        } else if (value == tables) {
+        } else if (value == schema.getTables()) {
             setText("Tabeller");
 
-
-        } else if (value == functions) {
+        } else if (value == schema.getFunctions()) {
             setText("Functions");
+
+        } else if (value instanceof Table){
+            setText( ((Table) value).getName());
+            setIcon( ICON_TABLE );
+
+        } else if (value instanceof View){
+            setText( ((View) value).getName());
+
+        } else if (value instanceof Function){
+            setText( ((Function) value).getName());
+
+        } else {
+            setText(value.toString());
         }
 
         return this;

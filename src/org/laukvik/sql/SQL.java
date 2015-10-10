@@ -45,15 +45,31 @@ public class SQL {
     private final static Logger LOG = Logger.getLogger(SQL.class.getName());
 
     private Connection connection;
-    private DatabaseConnection db;
+    private DatabaseConnection databaseConnection;
+    private Schema schema;
 
     public SQL(){
-        this.db = new DatabaseConnection();
+        schema = null;
+        connection = null;
+        databaseConnection = null;
     }
 
-    public SQL(DatabaseConnection db) throws SQLException, IOException {
-        this.db = db;
-        connection = getConnection(db);
+    public void openConnectionByName(String name) throws DatabaseConnectionNotFoundException, IOException, SQLException {
+        setDatabaseConnection(findConnectionByName(name));
+    }
+
+    public DatabaseConnection getDatabaseConnection() {
+        return databaseConnection;
+    }
+
+    public void setDatabaseConnection(DatabaseConnection databaseConnection) throws IOException, SQLException {
+        this.databaseConnection = databaseConnection;
+        connection = getConnection(databaseConnection);
+        schema = findSchema("");
+    }
+
+    public Schema getSchema() {
+        return schema;
     }
 
     public void close(){
@@ -81,11 +97,10 @@ public class SQL {
     }
 
     public static void main(String[] args) {
-        //args = new String[]{ "-query=\"SELECT * FROM Article\"","default"};
-
         if (args.length == 0) {
             /* Assume graphical application with no arguments */
-            SQL.openApplication( new SQL() );
+            SQL sql = new SQL();
+            SQL.openApplication( sql );
 
         } else if (args.length == 1){
 
@@ -97,10 +112,11 @@ public class SQL {
                 /* List all connections */
                 SQL.listConnections();
             } else {
+                SQL sql = new SQL();
                 DatabaseConnection db = null;
                 try {
-                    db = SQL.findConnectionByName(args[0]);
-                    SQL.openApplication(new SQL(db));
+                    sql.openConnectionByName(args[0]);
+                    SQL.openApplication(sql);
                 } catch (DatabaseConnectionNotFoundException e) {
                     System.out.println("Can't find database connection with name '" + args[0] + "'.");
                 } catch (SQLException e) {
@@ -110,33 +126,40 @@ public class SQL {
                 }
             }
         } else  if (args.length == 2){
-            DatabaseConnection db = null;
+            String action = args[0];
+            String namedConnection = args[1];
+            SQL sql = new SQL();
+
             try {
-                db = SQL.findConnectionByName(args[1]);
+                sql.openConnectionByName(namedConnection);
+
                 if (args[0].equalsIgnoreCase("-tables")){
-                    SQL sql = new SQL(db);
-                    sql.listTables();
+                    sql.listTables( sql.getSchema() );
+
                 } else if (args[0].equalsIgnoreCase("-functions")){
-                    SQL sql = new SQL(db);
-                    sql.listFunctions();
+
+                    sql.listFunctions(sql.getSchema());
+
                 } else if (args[0].equalsIgnoreCase("-views")){
-                    SQL sql = new SQL(db);
-                    sql.listViews();
+
+                    sql.listViews(sql.getSchema());
                 } else if (args[0].equalsIgnoreCase("-export")){
-                    SQL sql = new SQL(db);
-                    sql.export();
+
+                    sql.export(sql.getSchema());
+
                 } else if (args[0].startsWith("-export=")){
-                    SQL sql = new SQL(db);
+
                     String filename = args[0].split("=")[1];
-                    sql.exportFile(new File(filename));
+
+                    sql.exportFile(sql.getSchema(), new File(filename));
 
                 } else if (args[0].startsWith("-import=")){
-                    SQL sql = new SQL(db);
+
                     String filename = args[0].split("=")[1];
                     sql.importFile(new File(filename));
 
                 } else if (args[0].startsWith("-query=")){
-                    SQL sql = new SQL(db);
+
                     sql.listQuery(args[0].split("=")[1]);
                 }
             } catch (DatabaseConnectionNotFoundException e) {
@@ -184,7 +207,6 @@ public class SQL {
         System.out.println("Importing database to file: " + file.getAbsolutePath() );
         StringBuilder b = new StringBuilder();
         byte [] buffer = new byte[2048];
-
         try(FileInputStream in = new FileInputStream( file )) {
             in.read(buffer);
             b.append(buffer);
@@ -195,10 +217,10 @@ public class SQL {
         }
     }
 
-    public void exportFile( File file ){
+    public void exportFile( Schema schema, File file ){
         LOG.info("Exporting database to file: " + file.getAbsolutePath() );
         try(FileOutputStream out = new FileOutputStream( file )) {
-            List<Table> tables = findTables();
+            List<Table> tables = schema.getTables();
             for (int z=0; z<tables.size(); z++){
                 Table table = tables.get(z);
                 System.out.print(table.getName() + ":");
@@ -223,8 +245,8 @@ public class SQL {
         }
     }
 
-    public void export(){
-        List<Table> tables = findTables();
+    public void export(Schema schema){
+        List<Table> tables = schema.getTables();
         for (int z=0; z<tables.size(); z++){
             Table table = tables.get(z);
             System.out.println(table.getDDL() );
@@ -232,7 +254,6 @@ public class SQL {
                 int cols = rs.getMetaData().getColumnCount();
                 while (rs.next()) {
                     System.out.println(table.getInsertSQL(rs));
-
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -256,20 +277,20 @@ public class SQL {
     }
 
 
-    public void listTables(){
-        for (Table t : findTables()){
+    public void listTables(Schema schema){
+        for (Table t : schema.getTables()){
             System.out.println(t.getName());
         }
     }
 
-    public void listFunctions(){
-        for (Function f : findUserFunctions()){
+    public void listFunctions(Schema schema){
+        for (Function f : schema.getFunctions()){
             System.out.println(f.getName());
         }
     }
 
-    public void listViews(){
-        for (View v : findViews()){
+    public void listViews(Schema schema){
+        for (View v : schema.getViews()){
             System.out.println(v.getName());
         }
     }
@@ -303,12 +324,26 @@ public class SQL {
         return items;
     }
 
+    public Schema findSchema(String name){
+        Schema schema = new Schema(name);
+        for (Table t : findTables(schema)){
+            schema.addTable(t);
+        }
+        for (View v : findViews(schema)){
+            schema.addView(v);
+        }
+        for (Function f : findUserFunctions(schema)){
+            schema.addFunction(f);
+        }
+        return schema;
+    }
+
     /**
      * Find all tables
      *
      * @return
      */
-    public List<Table> findTables() {
+    public List<Table> findTables(Schema schema) {
         //LOG.finest("Finding tables...");
         List<Table> tables = new ArrayList<>();
         try {
@@ -405,7 +440,7 @@ public class SQL {
         return list;
     }
 
-    public List<Function> findUserFunctions() {
+    public List<Function> findUserFunctions(Schema schema) {
         List<Function> list = new ArrayList<>();
         try {
             DatabaseMetaData dbmd = getConnection().getMetaData();
@@ -421,7 +456,7 @@ public class SQL {
         return list;
     }
 
-    public List<View> findViews() {
+    public List<View> findViews(Schema schema) {
         List<View> list = new ArrayList<>();
         try {
             DatabaseMetaData dbmd = getConnection().getMetaData();
