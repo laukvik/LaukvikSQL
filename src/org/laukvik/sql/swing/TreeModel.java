@@ -46,6 +46,10 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     private String tables;
     private String views;
     private String functions;
+    private String systemFunctions;
+    private String timeFunctions;
+    private String stringFunctions;
+    private String numericFunctions;
     private Icon ICON_TABLE = ResourceManager.getIcon("table.gif" );
     private Icon ICON_DATABASE = ResourceManager.getIcon("db.gif" );
     private Icon ICON_VIEW = ResourceManager.getIcon("view.gif" );
@@ -58,6 +62,10 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
         tables = "Tables";
         views = "Views";
         functions = "Functions";
+        systemFunctions = "System Functions";
+        timeFunctions = "Time Functions";
+        stringFunctions = "String Functions";
+        numericFunctions = "Numeric Functions";
         setSQL(sql);
     }
 
@@ -75,7 +83,7 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     @Override
     public int getChildCount(Object parent) {
         if (parent == schema){
-            return 3;
+            return 7;
 
         } else if (parent == tables){
             return schema.getTables().size();
@@ -85,6 +93,15 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
 
         } else if (parent == functions){
             return schema.getFunctions().size();
+
+        } else if (parent == systemFunctions){
+            return schema.getSystemFunctions().size();
+        } else if (parent == timeFunctions){
+            return schema.getTimeFunctions().size();
+        } else if (parent == stringFunctions){
+            return schema.getStringFunctions().size();
+        } else if (parent == numericFunctions){
+            return schema.getNumericFunctions().size();
 
         } else {
             return 0;
@@ -99,6 +116,11 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
                 case 0 : return tables;
                 case 1 : return views;
                 case 2 : return functions;
+
+                case 3 : return systemFunctions;
+                case 4 : return timeFunctions;
+                case 5 : return stringFunctions;
+                case 6 : return numericFunctions;
                 default : return null;
             }
         } else if (parent == tables){
@@ -109,6 +131,15 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
 
         } else if (parent == functions){
             return schema.getFunctions().get(index);
+
+        } else if (parent == systemFunctions){
+            return schema.getSystemFunctions().get(index);
+        } else if (parent == timeFunctions){
+            return schema.getTimeFunctions().get(index);
+        } else if (parent == stringFunctions){
+            return schema.getStringFunctions().get(index);
+        } else if (parent == numericFunctions){
+            return schema.getNumericFunctions().get(index);
 
         } else {
             return 0;
@@ -127,6 +158,16 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
                 return 1;
             } else if (node == functions){
                 return 2;
+
+            } else if (node == systemFunctions){
+                return 3;
+            } else if (node == timeFunctions){
+                return 4;
+            } else if (node == stringFunctions){
+                return 5;
+            } else if (node == numericFunctions){
+                return 6;
+
             } else {
                 return -1;
             }
@@ -165,6 +206,15 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
             LOG.info("Schema.functions: false" );
             return false;
 
+        } else if (parent == systemFunctions){
+            return false;
+        } else if (parent == timeFunctions){
+            return false;
+        } else if (parent == stringFunctions){
+            return false;
+        } else if (parent == numericFunctions){
+            return false;
+
         } else {
             LOG.info("Schema.leaf: " + parent );
             return true;
@@ -200,16 +250,25 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
             setIcon( ICON_DATABASE );
             setText(schema.isDefault() ? "default" : schema.getName());
 
-        } else if (value == schema.getViews()) {
+        } else if (value == views) {
             setText("Views");
 
-        } else if (value == schema.getTables()) {
+        } else if (value == tables) {
             setText("Tabeller");
 
-        } else if (value == schema.getFunctions()) {
+        } else if (value == functions) {
             setText("Functions");
 
-        } else if (value instanceof Table){
+        } else if (value == systemFunctions) {
+            setText("System");
+        } else if (value == stringFunctions) {
+            setText("String");
+        } else if (value == timeFunctions) {
+            setText("Time");
+        } else if (value == numericFunctions) {
+            setText("Numeric");
+
+        } else if (value instanceof Table) {
             setText( ((Table) value).getName());
             setIcon( ICON_TABLE );
 

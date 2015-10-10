@@ -31,6 +31,11 @@ public class Schema implements Sqlable {
     private final List<View> views;
     private final List<Function> functions;
 
+    private final List<Function> systemFunctions;
+    private final List<Function> timeFunctions;
+    private final List<Function> stringFunctions;
+    private final List<Function> numericFunctions;
+
     public Schema() {
         this("");
     }
@@ -40,6 +45,26 @@ public class Schema implements Sqlable {
         tables = new ArrayList<>();
         views = new ArrayList<>();
         functions = new ArrayList<>();
+        systemFunctions = new ArrayList<>();
+        timeFunctions = new ArrayList<>();
+        stringFunctions = new ArrayList<>();
+        numericFunctions = new ArrayList<>();
+    }
+
+    public List<Function> getSystemFunctions() {
+        return systemFunctions;
+    }
+
+    public List<Function> getTimeFunctions() {
+        return timeFunctions;
+    }
+
+    public List<Function> getStringFunctions() {
+        return stringFunctions;
+    }
+
+    public List<Function> getNumericFunctions() {
+        return numericFunctions;
     }
 
     public boolean isDefault(){
@@ -85,6 +110,20 @@ public class Schema implements Sqlable {
     public String getName() {
         return name;
     }
+
+    public void addSystemFunction(Function function){
+        systemFunctions.add(function);
+    }
+    public void addStringFunction(Function function){
+        stringFunctions.add(function);
+    }
+    public void addTimeFunction(Function function){
+        timeFunctions.add(function);
+    }
+    public void addNumericFunction(Function function){
+        numericFunctions.add(function);
+    }
+
 
     @Override
     public String toString() {

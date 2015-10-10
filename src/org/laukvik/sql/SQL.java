@@ -335,6 +335,19 @@ public class SQL {
         for (Function f : findUserFunctions(schema)){
             schema.addFunction(f);
         }
+
+        for (Function f : listSystemFunctions()){
+            schema.addSystemFunction(f);
+        }
+        for (Function f : listStringFunctions()){
+            schema.addStringFunction(f);
+        }
+        for (Function f : listTimeDateFunctions()){
+            schema.addTimeFunction(f);
+        }
+        for (Function f : listNumbericFunctions()){
+            schema.addNumericFunction( f );
+        }
         return schema;
     }
 
