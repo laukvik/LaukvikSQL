@@ -38,12 +38,13 @@ public class Viewer extends javax.swing.JFrame {
     private final int DEFAULT_DDL_WIDTH = 300;
     private final int DEFAULT_QUERY_HEIGHT = 100;
     private final int DEFAULT_DIVIDER_SIZE;
-    private final int DEFAULT_TREE_WIDTH = 200;
+    private final int DEFAULT_TREE_WIDTH = 250;
 
     private SQL sql = null;
     private TreeModel treeModel;
-
     private JPanel emptyPanel;
+    private DiagramPanel diagramPanel;
+    private JScrollPane diagramScroll;
 
     /**
      * Creates new form SQL
@@ -52,6 +53,9 @@ public class Viewer extends javax.swing.JFrame {
         super();
         emptyPanel = new JPanel();
         initComponents();
+
+        diagramPanel = new DiagramPanel();
+        diagramScroll = new JScrollPane(diagramPanel);
 
         tree.setBackground(new Color(217, 226, 239));
 
@@ -84,6 +88,13 @@ public class Viewer extends javax.swing.JFrame {
         treeModel = new TreeModel(sql);
         tree.setCellRenderer(treeModel);
         tree.setModel(treeModel);
+
+
+        diagramPanel.removeAll();
+        for (Table t : sql.findTables()){
+            diagramPanel.addTable(t);
+        }
+        diagramPanel.autoLayout();
     }
 
     public void openTable(Table t){
@@ -119,7 +130,7 @@ public class Viewer extends javax.swing.JFrame {
             mainSplitPane.setDividerLocation( DEFAULT_TREE_WIDTH );
         } else if (sqlable instanceof Function){
         } else {
-            mainSplitPane.setRightComponent( emptyPanel );
+            mainSplitPane.setRightComponent( diagramScroll );
             mainSplitPane.setDividerLocation( DEFAULT_TREE_WIDTH );
         }
     }
@@ -336,6 +347,7 @@ public class Viewer extends javax.swing.JFrame {
                 Sqlable s = (Sqlable) o;
                 openSQL(s);
             } else {
+                System.err.println("ROT?");
                 openSQL(null);
             }
         }

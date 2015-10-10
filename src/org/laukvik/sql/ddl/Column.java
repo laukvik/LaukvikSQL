@@ -164,6 +164,11 @@ public abstract class Column {
         this.name = name;
     }
 
+    /**
+     * Sets the name of the column
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
@@ -211,4 +216,8 @@ public abstract class Column {
         return value.toString();
     }
 
+
+    public int index(){
+        return table.getColumns().indexOf(this);
+    }
 }

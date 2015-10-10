@@ -102,6 +102,7 @@ public class Table implements Sqlable {
             b.append(c.getName());
             b.append("\t");
             b.append(c.getDDL());
+            /*
             if (c.getForeignKey() == null){
 
             } else {
@@ -111,12 +112,12 @@ public class Table implements Sqlable {
                 b.append( c.getForeignKey().getColumn() );
                 b.append(")");
             }
-
-            if (c.getDefaultValue() != null){
+            */
+            /*if (c.getDefaultValue() != null){
                 b.append(" DEFAULT '");
                 b.append( c.getDefaultValue());
                 b.append("'");
-            }
+            }*/
             if (c.isAutoIncrement()){
                 //b.append(" AUTOINCREMENT");
             }
@@ -131,12 +132,11 @@ public class Table implements Sqlable {
             b.append(",\n\tPRIMARY KEY(");
             for (Column c : primaryKeys) {
                 if (x == 0){
-
                 } else {
                     b.append(",");
                 }
-
                 b.append(c.getName());
+                x++;
             }
             b.append(")");
         }

@@ -41,34 +41,41 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     private static final Logger LOG = Logger.getLogger(TreeModel.class.getName());
     private final List<TreeModelListener> listeners;
     private SQL sql;
-    private List root;
-    private List<Table> tables;
-    private List<View> views;
-    private List<Function> functions;
+    private final List root;
+    private final List<Table> tables;
+    private final List<View> views;
+    private final List<Function> functions;
 
 
     public TreeModel(SQL sql) {
         super();
         listeners = new ArrayList<>();
         root = new ArrayList<>();
+        tables = new ArrayList<>();
+        views = new ArrayList<>();
+        functions = new ArrayList<>();
+
+        root.add(functions);
+        root.add(tables);
+
+
+        root.add(views);
         setSQL(sql);
     }
 
     public void setSQL(SQL sql) {
         this.sql = sql;
-        root = new ArrayList<>();
-        if (sql == null){
-            tables = new ArrayList<>();
-            views = new ArrayList<>();
-            functions = new ArrayList<>();
-        } else {
-            tables = sql.findTables();
-            views = sql.findViews();
-            functions = sql.findUserFunctions();
+
+        tables.clear();
+        views.clear();
+        functions.clear();
+
+        if (sql != null){
+            tables.addAll( sql.findTables() );
+            views.addAll( sql.findViews() );
+            functions.addAll( sql.findUserFunctions());
         }
-        root.add(tables);
-        root.add(views);
-        root.add(functions);
+
     }
 
     @Override
@@ -79,6 +86,12 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     @Override
     public Object getChild(Object parent, int index) {
         LOG.finest("getChild: " + parent + " index: " + index);
+        if (parent instanceof List){
+            return ((List) parent).get(index);
+        } else {
+            return 0;
+        }
+        /*
         if (parent == root){
             return root.get(index);
 
@@ -93,11 +106,17 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
 
         } else {
             return null;
-        }
+        }*/
     }
 
     @Override
     public int getChildCount(Object parent) {
+        if (parent instanceof List){
+            return ((List) parent).size();
+        } else {
+            return 0;
+        }
+        /*
         if (parent == root){
             return root.size();
 
@@ -112,13 +131,19 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
 
         } else {
             return -1;
-        }
+        }*/
     }
 
     @Override
     public int getIndexOfChild(Object parent, Object node) {
         LOG.info("getIndexOfChild: " + parent + " child: " + node);
-
+        if (parent instanceof List){
+            List list = (List)parent;
+            return list.indexOf(node);
+        } else {
+            return 0;
+        }
+        /*
         if (parent == tables){
             return tables.indexOf( (Table)node );
 
@@ -134,13 +159,14 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
         } else {
             LOG.warning("Unkown: " + parent);
             return 0;
-        }
+        }*/
     }
 
     @Override
     public boolean isLeaf(Object node) {
+        return !(node instanceof List);
 
-
+        /*
         if (node == root) {
             LOG.info("Root: is not leaf" );
             return false;
@@ -160,7 +186,7 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
         } else {
             LOG.warning(node + ": is not leaf");
             return true;
-        }
+        }*/
     }
 
     @Override
@@ -180,9 +206,7 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
         listeners.remove(l);
     }
 
-    public Component getTreeCellRendererComponent(JTree tree, Object value,
-            boolean sel, boolean expanded, boolean leaf, int row,
-            boolean hasFocus) {
+    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
         super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
         setBackground(sel ? getBackgroundSelectionColor() : tree.getBackground());
@@ -192,11 +216,12 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
         if (value == root) {
             setText("Rot");
 
+        } else if (value == views) {
+            setText("Views");
+
         } else if (value == tables) {
             setText("Tabeller");
 
-        } else if (value == views) {
-            setText("Views");
 
         } else if (value == functions) {
             setText("Functions");
