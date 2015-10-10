@@ -49,7 +49,7 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     private Icon ICON_TABLE = ResourceManager.getIcon("table.gif" );
     private Icon ICON_DATABASE = ResourceManager.getIcon("db.gif" );
     private Icon ICON_VIEW = ResourceManager.getIcon("view.gif" );
-    private Icon ICON_FUNCTION = ResourceManager.getIcon("function.gif" );
+    private Icon ICON_FUNCTION = ResourceManager.getIcon("table.gif" );
 
     public TreeModel(SQL sql) {
         super();

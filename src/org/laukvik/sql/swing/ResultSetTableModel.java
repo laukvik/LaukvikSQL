@@ -121,7 +121,12 @@ public class ResultSetTableModel implements TableModel {
                 return rs.getObject(columnIndex + 1);
             } else {
                 try {
-                    boolean couldMove = rs.absolute(rowIndex);
+                    if (rowIndex == 0){
+                        rs.first();
+                    } else {
+                        rs.absolute(rowIndex);
+                    }
+                    this.rowIndex = rowIndex;
                     return rs.getObject(columnIndex + 1);
                 } catch (SQLException e) {
                     System.err.println("Row: " + rowIndex + " Column: " + columnIndex + " Message: " + e.getMessage());

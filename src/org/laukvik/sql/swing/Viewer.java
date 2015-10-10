@@ -23,6 +23,8 @@ import java.awt.Toolkit;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
+import javax.swing.tree.TreePath;
+
 import org.laukvik.sql.SQL;
 import org.laukvik.sql.ddl.*;
 
@@ -75,10 +77,15 @@ public class Viewer extends javax.swing.JFrame {
         Dimension s = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension s70 = new Dimension(Math.round(s.width * 0.7f), Math.round(s.height * 0.7f));
         setSize(s70);
+
         setLocationRelativeTo(null);
+
         DEFAULT_DIVIDER_SIZE = tableSplitPane.getDividerSize();
         setQueryPanelVisible(false);
         setDefinitionPanelVisible(false);
+        jToolBar1.setVisible(false);
+        setSize(Toolkit.getDefaultToolkit().getScreenSize());
+
     }
 
     public void setSQL(SQL sql) {
@@ -92,6 +99,9 @@ public class Viewer extends javax.swing.JFrame {
             diagramPanel.addTable(t);
         }
         diagramPanel.autoLayout();
+        tree.setSelectionPath( new TreePath(treeModel.getRoot()));
+
+        setTitle( sql.getDatabaseConnection().getName() );
     }
 
     public void openDiagram(){
