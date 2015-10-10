@@ -97,6 +97,7 @@ public class SQL {
     }
 
     public static void main(String[] args) {
+        args = new String[]{"default"};
         if (args.length == 0) {
             /* Assume graphical application with no arguments */
             SQL sql = new SQL();
@@ -346,7 +347,7 @@ public class SQL {
             schema.addTimeFunction(f);
         }
         for (Function f : listNumbericFunctions()){
-            schema.addNumericFunction( f );
+            schema.addNumericFunction(f);
         }
         return schema;
     }
@@ -553,19 +554,29 @@ public class SQL {
         // Gets the database metadata
         Connection conn = getConnection();
         DatabaseMetaData mtdt = conn.getMetaData();
-        System.out.println(mtdt.getProcedureTerm());
-        ResultSet rs = mtdt.getProcedures(conn.getCatalog(), "%", function.getName());
+        //System.out.println(mtdt.getProcedureTerm());
+        //ResultSet rs = mtdt.getProcedures(conn.getCatalog(), "%", function.getName());
 
-        ResultSetMetaData rsmd = rs.getMetaData();
-        int numCols = rsmd.getColumnCount();
+        ResultSet rs = mtdt.getProcedureColumns( null, null, function.getName(), null);
+            /* Iterate all columns */
+        while (rs.next()) {
+            FunctionParameter p = new FunctionParameter(rs.getString("COLUMN_NAME"));
+            p.setComments(rs.getString("REMARKS"));
+            //System.out.println("\t" + p.getName() + " " + p.getDataType() + " " + p.getRemarks());
+            function.addParameter(p);
+            System.out.println( p.getName() );
+        }
+/*
+        int numCols = rs.getMetaData().getColumnCount();
         for (int i = 1; i <= numCols; i++) {
             if (i > 1) {
                 System.out.print(", ");
             }
-            System.out.print(rsmd.getColumnLabel(i));
+            System.out.print(rs.getMetaData().getColumnLabel(i));
         }
         System.out.println("");
         while (rs.next()) {
+            function.setComments( rs.getString("REMARKS"));
             for (int i = 1; i <= numCols; i++) {
                 if (i > 1) {
                     System.out.print(", ");
@@ -574,6 +585,9 @@ public class SQL {
             }
             System.out.println("");
         }
+
+        System.out.println("Comments: " + function.getComments());
+*/
         return function;
     }
 
@@ -582,7 +596,7 @@ public class SQL {
      *
      * @param sql
      */
-    public static void openApplication( SQL sql ){
+    public static void openApplication( final SQL sql ){
         try {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());

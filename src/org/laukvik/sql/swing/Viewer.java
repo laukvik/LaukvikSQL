@@ -20,6 +20,7 @@ package org.laukvik.sql.swing;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
@@ -95,13 +96,21 @@ public class Viewer extends javax.swing.JFrame {
         tree.setModel(treeModel);
 
         diagramPanel.removeAll();
-        for (Table t : sql.getSchema().getTables()){
-            diagramPanel.addTable(t);
+        if (sql.getSchema() == null){
+            setTitle("");
+        } else {
+            for (Table t : sql.getSchema().getTables()){
+                diagramPanel.addTable(t);
+            }
+            tree.setSelectionPath( new TreePath(treeModel.getRoot()));
+            setTitle( sql.getDatabaseConnection().getName() );
         }
-        diagramPanel.autoLayout();
-        tree.setSelectionPath( new TreePath(treeModel.getRoot()));
 
-        setTitle( sql.getDatabaseConnection().getName() );
+        diagramPanel.autoLayout();
+
+
+
+
     }
 
     public void openDiagram(){
@@ -111,6 +120,11 @@ public class Viewer extends javax.swing.JFrame {
 
     public void openFunction(Function function){
         LOG.info("Function: " + function.getName());
+        try {
+            sql.displayFunction(function);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void openView(View view){

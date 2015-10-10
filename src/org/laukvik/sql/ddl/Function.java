@@ -17,6 +17,9 @@
  */
 package org.laukvik.sql.ddl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author morten
@@ -24,13 +27,32 @@ package org.laukvik.sql.ddl;
 public class Function implements Sqlable {
 
     private final String name;
+    private String comments;
+    private List<FunctionParameter> parameters;
 
     public Function(String name) {
         this.name = name;
+        this.parameters = new ArrayList<>();
+    }
+
+    public void addParameter(FunctionParameter parameter ){
+        this.parameters.add( parameter );
+    }
+
+    public List<FunctionParameter> getParameters() {
+        return parameters;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     @Override

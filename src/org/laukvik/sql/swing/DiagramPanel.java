@@ -24,7 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.laukvik.sql.ddl.*;
-import org.laukvik.sql.swing.ResourceManager;
+import org.laukvik.sql.swing.icons.ResourceManager;
 
 public class DiagramPanel extends JPanel implements MouseListener, MouseMotionListener {
 

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="LaukvikSVG" basedir="." default="compile">
+
+    <description>A utility library to view, backup and restore database through JDBC drivers</description>
+
+    <property name="main.class" value="org.laukvik.sql.SQL"/>
+
+    <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <property name="test" location="test"/>
+    <property name="lib.dir" value="lib" />
+
+    <property environment="env" />
+
+    <!-- external libraries classpath, we don't need sources and javadoc -->
+    <path id="classpath">
+        <fileset dir="${basedir}/">
+            <include name="${lib.dir}/*.jar" />
+            <include name="${lib.dir}/org/laukvik/sql/swing/icons/*.*" />
+            <exclude name="${lib.dir}/*sources.jar"/>
+            <exclude name="${lib.dir}/*javadoc.jar"/>
+        </fileset>
+    </path>
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="clean" description="clean up">
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+    <target name="compile" depends="init" description="compile the source">
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac includeantruntime="false" srcdir="${src}" destdir="${build}"  classpathref="classpath"/>
+    </target>
+
+    <target name="dist" depends="compile" description="generate the distribution">
+        <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+        <jar jarfile="${dist}/LaukvikSQL.jar" basedir="${build}"/>
+    </target>
+
+    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="lib/appbundler-1.0.jar" />
+
+    <target name="osx" depends="dist">
+        <bundleapp name="Featherine" displayname="Featherine" outputdirectory="dist" description="Utility to view databases"
+                   signature="MOLA" icon="feather.icns"
+                   identifier="org.laukvik.SQL" copyright="Morten Laukvik" applicationcategory="public.app-category.development" shortversion="1"
+                   mainclassname="org.laukvik.sql.SQL">
+            <classpath file="dist/LaukvikSQL.jar"/>
+            <classpath file="lib/AbsoluteLayout.jar"/>
+            <classpath file="lib/mysql-connector-java-5.1.34-bin.jar"/>
+            <classpath file="lib/postgresql-9.2-1004-jdbc4.jar"/>
+            <classpath file="lib/sqljdbc42.jar"/>
+
+
+            <option value="-Dapple.laf.useScreenMenuBar=true"/>
+            <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
+            <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
+            <option value="-Dapple.awt.application.name=Featherine"/>
+            <option value="-Dcom.apple.smallTabs=true"/>
+
+
+
+            <option value="-Xmx1024M"/>
+
+        </bundleapp>
+    </target>
+
+</project>

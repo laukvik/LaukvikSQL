@@ -31,6 +31,7 @@ import org.laukvik.sql.ddl.Function;
 import org.laukvik.sql.ddl.Schema;
 import org.laukvik.sql.ddl.Table;
 import org.laukvik.sql.ddl.View;
+import org.laukvik.sql.swing.icons.ResourceManager;
 
 /**
  * A model for the database connection and a renderer for tree nodes
@@ -50,7 +51,7 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     private String timeFunctions;
     private String stringFunctions;
     private String numericFunctions;
-    private Icon ICON_TABLE = ResourceManager.getIcon("table.gif" );
+    private Icon ICON_TABLE = ResourceManager.getIcon("table.gif");
     private Icon ICON_DATABASE = ResourceManager.getIcon("db.gif" );
     private Icon ICON_VIEW = ResourceManager.getIcon("view.gif" );
     private Icon ICON_FUNCTION = ResourceManager.getIcon("table.gif" );
@@ -110,7 +111,6 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
 
     @Override
     public Object getChild(Object parent, int index) {
-        LOG.info("getChild: " + parent + " index: " + index);
         if (parent == schema){
             switch (index){
                 case 0 : return tables;
@@ -189,21 +189,16 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
 
     @Override
     public boolean isLeaf(Object parent) {
-
         if (parent == schema){
-            LOG.info("Schema.leaf: false" );
             return false;
 
         } else if (parent == tables){
-            LOG.info("Schema.tables: false" );
             return false;
 
         } else if (parent == views){
-            LOG.info("Schema.views: false" );
             return false;
 
         } else if (parent == functions){
-            LOG.info("Schema.functions: false" );
             return false;
 
         } else if (parent == systemFunctions){
@@ -216,7 +211,6 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
             return false;
 
         } else {
-            LOG.info("Schema.leaf: " + parent );
             return true;
         }
     }
