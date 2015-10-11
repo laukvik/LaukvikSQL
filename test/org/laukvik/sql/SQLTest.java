@@ -1,12 +1,34 @@
 package org.laukvik.sql;
 
 import org.junit.Test;
+import org.laukvik.sql.ddl.DatabaseConnection;
+import org.laukvik.sql.ddl.Schema;
+
+import java.util.List;
 
 /**
  * Created by morten on 08.10.2015.
  */
 public class SQLTest {
 
+    @Test
+    public void shouldFindNamedConnections() throws DatabaseConnectionNotFoundException {
+        SQL sql = new SQL();
+        List<DatabaseConnection> conns = SQL.findDatabaseConnections();
+        for (DatabaseConnection c : conns){
+            System.out.println(c.getName());
+        }
+    }
+
+    @Test
+    public void shouldFindSchema() throws DatabaseConnectionNotFoundException {
+        SQL sql = new SQL();
+
+        System.out.println();
+        //SQL.findSchema();
+    }
+
+    /*
     @Test
     public void shouldListTables(){
         SQL.main( new String[] {"-tables","default"} );
@@ -36,5 +58,5 @@ public class SQLTest {
     public void shouldNotFindDatabase(){
         SQL.main( new String[] {"illegal-database"} );
     }
-
+*/
 }
