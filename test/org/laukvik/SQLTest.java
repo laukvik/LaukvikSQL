@@ -1,31 +1,30 @@
-package org.laukvik.sql;
+package org.laukvik;
 
-import org.junit.Test;
+import org.junit.*;
+import org.laukvik.sql.DatabaseConnectionNotFoundException;
+import org.laukvik.sql.SQL;
 import org.laukvik.sql.ddl.DatabaseConnection;
 import org.laukvik.sql.ddl.Schema;
 
 import java.util.List;
 
-/**
- * Created by morten on 08.10.2015.
- */
+import static org.junit.Assert.fail;
+
 public class SQLTest {
 
     @Test
     public void shouldFindNamedConnections() throws DatabaseConnectionNotFoundException {
-        SQL sql = new SQL();
         List<DatabaseConnection> conns = SQL.findDatabaseConnections();
+        Assert.assertEquals(4,conns.size());
+        System.out.println("Connections: " + conns.size());
         for (DatabaseConnection c : conns){
             System.out.println(c.getName());
         }
     }
 
     @Test
-    public void shouldFindSchema() throws DatabaseConnectionNotFoundException {
-        SQL sql = new SQL();
-
-        System.out.println();
-        //SQL.findSchema();
+    public void shouldFail() throws DatabaseConnectionNotFoundException {
+        Assert.fail("Douche");
     }
 
     /*

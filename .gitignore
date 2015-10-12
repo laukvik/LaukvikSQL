@@ -1,3 +1,6 @@
 .DSIgnore
 build/
 out/
+dist/
+.idea/
+reports/

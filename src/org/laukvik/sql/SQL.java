@@ -550,6 +550,14 @@ public class SQL {
         return items;
     }
 
+    /**
+     *
+     * http://docs.oracle.com/javase/7/docs/api/java/sql/DatabaseMetaData.html#getProcedureColumns(java.lang.String,%20java.lang.String,%20java.lang.String,%20java.lang.String)
+     *
+     * @param function
+     * @return
+     * @throws SQLException
+     */
     public Function displayFunction(Function function) throws SQLException {
         // Gets the database metadata
         Connection conn = getConnection();

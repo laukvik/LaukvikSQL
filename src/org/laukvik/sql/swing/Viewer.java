@@ -22,12 +22,17 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
-
 import org.laukvik.sql.SQL;
-import org.laukvik.sql.ddl.*;
+import org.laukvik.sql.ddl.Function;
+import org.laukvik.sql.ddl.Schema;
+import org.laukvik.sql.ddl.Sqlable;
+import org.laukvik.sql.ddl.Table;
+import org.laukvik.sql.ddl.View;
 
 /**
  *
@@ -96,29 +101,26 @@ public class Viewer extends javax.swing.JFrame {
         tree.setModel(treeModel);
 
         diagramPanel.removeAll();
-        if (sql.getSchema() == null){
+        if (sql.getSchema() == null) {
             setTitle("");
         } else {
-            for (Table t : sql.getSchema().getTables()){
+            for (Table t : sql.getSchema().getTables()) {
                 diagramPanel.addTable(t);
             }
-            tree.setSelectionPath( new TreePath(treeModel.getRoot()));
-            setTitle( sql.getDatabaseConnection().getName() );
+            tree.setSelectionPath(new TreePath(treeModel.getRoot()));
+            setTitle(sql.getDatabaseConnection().getName());
         }
 
         diagramPanel.autoLayout();
 
-
-
-
     }
 
-    public void openDiagram(){
-        mainSplitPane.setRightComponent( diagramScroll );
-        mainSplitPane.setDividerLocation( DEFAULT_TREE_WIDTH );
+    public void openDiagram() {
+        mainSplitPane.setRightComponent(diagramScroll);
+        mainSplitPane.setDividerLocation(DEFAULT_TREE_WIDTH);
     }
 
-    public void openFunction(Function function){
+    public void openFunction(Function function) {
         LOG.info("Function: " + function.getName());
         try {
             sql.displayFunction(function);
@@ -127,14 +129,14 @@ public class Viewer extends javax.swing.JFrame {
         }
     }
 
-    public void openView(View view){
+    public void openView(View view) {
         LOG.info("View: " + view.getName());
     }
 
-    public void openTable(Table t){
+    public void openTable(Table t) {
         LOG.info("Table: " + t.getName());
-        mainSplitPane.setRightComponent( tableSplitPane );
-        mainSplitPane.setDividerLocation( DEFAULT_TREE_WIDTH );
+        mainSplitPane.setRightComponent(tableSplitPane);
+        mainSplitPane.setDividerLocation(DEFAULT_TREE_WIDTH);
         // Open query
         queryPane.setText("SELECT * FROM " + t.getName());
         // Run query
@@ -165,7 +167,7 @@ public class Viewer extends javax.swing.JFrame {
             Table t = (Table) sqlable;
             openTable(t);
 
-        } else if (sqlable instanceof Function){
+        } else if (sqlable instanceof Function) {
             /* Function items */
         } else {
             /* Other items */
@@ -198,15 +200,21 @@ public class Viewer extends javax.swing.JFrame {
         toggleQuery = new javax.swing.JToggleButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        newMenuItem = new javax.swing.JMenuItem();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
+        exportMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         cutMenuItem = new javax.swing.JMenuItem();
         copyMenuItem = new javax.swing.JMenuItem();
         pasteMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
+        viewMenu = new javax.swing.JMenu();
+        viewQueryMenuItem = new javax.swing.JCheckBoxMenuItem();
+        viewDDLMenuItem = new javax.swing.JCheckBoxMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -214,12 +222,12 @@ public class Viewer extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         mainSplitPane.setBorder(null);
-        mainSplitPane.setDividerLocation(DEFAULT_TREE_WIDTH);
+        mainSplitPane.setDividerLocation(200);
 
-        tree.setRootVisible(true);
+        tree.setRootVisible(false);
         tree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
-                jTree1ValueChanged(evt);
+                treeValueChanged(evt);
             }
         });
         treeScrollPane.setViewportView(tree);
@@ -305,6 +313,9 @@ public class Viewer extends javax.swing.JFrame {
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
 
+        newMenuItem.setText("New");
+        fileMenu.add(newMenuItem);
+
         openMenuItem.setMnemonic('o');
         openMenuItem.setText("Open");
         openMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -322,6 +333,10 @@ public class Viewer extends javax.swing.JFrame {
         saveAsMenuItem.setText("Save As ...");
         saveAsMenuItem.setDisplayedMnemonicIndex(5);
         fileMenu.add(saveAsMenuItem);
+
+        exportMenuItem.setText("Export");
+        fileMenu.add(exportMenuItem);
+        fileMenu.add(jSeparator1);
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -355,6 +370,16 @@ public class Viewer extends javax.swing.JFrame {
 
         menuBar.add(editMenu);
 
+        viewMenu.setText("View");
+
+        viewQueryMenuItem.setText("Query");
+        viewMenu.add(viewQueryMenuItem);
+
+        viewDDLMenuItem.setText("Table definition");
+        viewMenu.add(viewDDLMenuItem);
+
+        menuBar.add(viewMenu);
+
         helpMenu.setMnemonic('h');
         helpMenu.setText("Help");
 
@@ -377,7 +402,7 @@ public class Viewer extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
+    private void treeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeValueChanged
         if (evt.getPath() != null) {
             Object o = evt.getPath().getLastPathComponent();
 
@@ -387,22 +412,20 @@ public class Viewer extends javax.swing.JFrame {
             } else if (o instanceof Table) {
                 openTable((Table) o);
 
-            } else if (o instanceof View){
-                openView( (View)o );
+            } else if (o instanceof View) {
+                openView((View) o);
 
-            } else if (o instanceof Function){
+            } else if (o instanceof Function) {
                 openFunction((Function) o);
 
             } else {
 
-
             }
         }
 
-    }//GEN-LAST:event_jTree1ValueChanged
+    }//GEN-LAST:event_treeValueChanged
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-
 
     }//GEN-LAST:event_openMenuItemActionPerformed
 
@@ -446,13 +469,15 @@ public class Viewer extends javax.swing.JFrame {
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JScrollPane jScrollPaneQuery;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JTree tree;
     private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem newMenuItem;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JSplitPane queryAndResultSplitPane;
@@ -465,7 +490,11 @@ public class Viewer extends javax.swing.JFrame {
     private javax.swing.JSplitPane tableSplitPane;
     private javax.swing.JToggleButton toggleDDL;
     private javax.swing.JToggleButton toggleQuery;
+    private javax.swing.JTree tree;
     private javax.swing.JScrollPane treeScrollPane;
+    private javax.swing.JCheckBoxMenuItem viewDDLMenuItem;
+    private javax.swing.JMenu viewMenu;
+    private javax.swing.JCheckBoxMenuItem viewQueryMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }
