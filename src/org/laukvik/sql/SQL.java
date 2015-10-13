@@ -54,6 +54,8 @@ public class SQL {
         databaseConnection = null;
     }
 
+
+
     public void openConnectionByName(String name) throws DatabaseConnectionNotFoundException, IOException, SQLException {
         setDatabaseConnection(findConnectionByName(name));
     }
@@ -80,18 +82,40 @@ public class SQL {
         }
     }
 
+    public boolean canConnect(DatabaseConnection db){
+        try {
+            getConnection2(db);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    private static Connection getConnection2(DatabaseConnection db) throws SQLException, IOException {
+        LOG.info("URL: " + db.getConnectionURL());
+        Connection connection = DriverManager.getConnection(db.getConnectionURL(), db.getUser(), db.getPassword());
+
+        return connection;
+    }
+
     private static Connection getConnection(DatabaseConnection db) throws SQLException, IOException {
         /* Read settings file */
         Properties p = new Properties();
         File f = new File( SQL.getConnectionsHome(),  db.getName() + ".properties");
-        LOG.fine("Loading settings file " + f.getAbsolutePath());
+        LOG.info("Loading settings file " + f.getAbsolutePath());
         p.load(new FileInputStream(f));
         db.setUrl(p.getProperty("url"));
         db.setUser(p.getProperty("user"));
         db.setPassword(p.getProperty("password"));
-        LOG.fine("URL: " + db.getUrl());
+        db.setPort(p.getProperty("port"));
+        db.setServer(p.getProperty("server"));
+        db.setDatabase(p.getProperty("database"));
+        db.setDriver( p.getProperty("driver"));
+
+        LOG.info("URL: " + db.getUrl());
         LOG.fine("User: " + db.getUser());
-        //LOG.info("Password: " + db.getPassword());
         Connection connection = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPassword());
         return connection;
     }
@@ -306,10 +330,19 @@ public class SQL {
         return connection;
     }
 
+    public static File getLibraryHome() {
+        File home = new File(System.getProperty("user.home"), "Library");
+        if (!home.exists()){
+            home.mkdir();
+        }
+        return home;
+    }
+
     public static File getConnectionsHome() {
-        File home = new File(System.getProperty("user.home"), "org.laukvik.sql");
-        LOG.finer("Connections home: " + home.getAbsolutePath());
-        home.mkdir();
+        File home = new File(getLibraryHome(), "org.laukvik.sql");
+        if (!home.exists()){
+            home.mkdir();
+        }
         return home;
     }
 

@@ -17,28 +17,33 @@
  */
 package org.laukvik.sql.swing;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.logging.Logger;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
+
+import org.laukvik.csv.CSV;
+import org.laukvik.csv.CsvWriter;
+import org.laukvik.sql.ResultSetExporter;
 import org.laukvik.sql.SQL;
+import org.laukvik.sql.ddl.DatabaseConnection;
 import org.laukvik.sql.ddl.Function;
 import org.laukvik.sql.ddl.Schema;
 import org.laukvik.sql.ddl.Sqlable;
 import org.laukvik.sql.ddl.Table;
 import org.laukvik.sql.ddl.View;
+import org.laukvik.sql.swing.icons.ResourceManager;
 
 /**
  *
  * @author morten
  */
-public class Viewer extends javax.swing.JFrame {
+public class Viewer extends javax.swing.JFrame implements ConnectionDialogListener {
 
     private final static Logger LOG = Logger.getLogger(Viewer.class.getName());
     private final int DEFAULT_DDL_WIDTH = 300;
@@ -51,6 +56,7 @@ public class Viewer extends javax.swing.JFrame {
     private JPanel emptyPanel;
     private DiagramPanel diagramPanel;
     private JScrollPane diagramScroll;
+    private ConnectionDialog connectionPanel;
 
     /**
      * Creates new form SQL
@@ -58,7 +64,17 @@ public class Viewer extends javax.swing.JFrame {
     public Viewer(SQL sql) {
         super();
         emptyPanel = new JPanel();
+
         initComponents();
+
+        newMenuItem.setAccelerator(ResourceManager.getKeyStroke(KeyEvent.VK_N));
+        openMenuItem.setAccelerator(ResourceManager.getKeyStroke(KeyEvent.VK_O));
+        saveMenuItem.setAccelerator(ResourceManager.getKeyStroke(KeyEvent.VK_S));
+        quitMenuItem.setAccelerator(ResourceManager.getKeyStroke(KeyEvent.VK_Q));
+
+        importMenuItem.setAccelerator(ResourceManager.getKeyStroke(KeyEvent.VK_I));
+        exportMenuItem.setAccelerator(ResourceManager.getKeyStroke(KeyEvent.VK_E));
+
 
         diagramPanel = new DiagramPanel();
         diagramScroll = new JScrollPane(diagramPanel);
@@ -204,9 +220,11 @@ public class Viewer extends javax.swing.JFrame {
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        exitMenuItem = new javax.swing.JMenuItem();
+        quitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         cutMenuItem = new javax.swing.JMenuItem();
         copyMenuItem = new javax.swing.JMenuItem();
@@ -224,7 +242,6 @@ public class Viewer extends javax.swing.JFrame {
         mainSplitPane.setBorder(null);
         mainSplitPane.setDividerLocation(200);
 
-        tree.setRootVisible(false);
         tree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
                 treeValueChanged(evt);
@@ -314,6 +331,11 @@ public class Viewer extends javax.swing.JFrame {
         fileMenu.setText("File");
 
         newMenuItem.setText("New");
+        newMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(newMenuItem);
 
         openMenuItem.setMnemonic('o');
@@ -333,19 +355,33 @@ public class Viewer extends javax.swing.JFrame {
         saveAsMenuItem.setText("Save As ...");
         saveAsMenuItem.setDisplayedMnemonicIndex(5);
         fileMenu.add(saveAsMenuItem);
+        fileMenu.add(jSeparator2);
+
+        importMenuItem.setText("Import");
+        importMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(importMenuItem);
 
         exportMenuItem.setText("Export");
+        exportMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(exportMenuItem);
         fileMenu.add(jSeparator1);
 
-        exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        quitMenuItem.setMnemonic('x');
+        quitMenuItem.setText("Quit");
+        quitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMenuItemActionPerformed(evt);
+                quitMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(exitMenuItem);
+        fileMenu.add(quitMenuItem);
 
         menuBar.add(fileMenu);
 
@@ -398,9 +434,9 @@ public class Viewer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+    private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitMenuItemActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_exitMenuItemActionPerformed
+    }//GEN-LAST:event_quitMenuItemActionPerformed
 
     private void treeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeValueChanged
         if (evt.getPath() != null) {
@@ -426,6 +462,7 @@ public class Viewer extends javax.swing.JFrame {
     }//GEN-LAST:event_treeValueChanged
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        LOG.info("openMenu");
 
     }//GEN-LAST:event_openMenuItemActionPerformed
 
@@ -460,6 +497,83 @@ public class Viewer extends javax.swing.JFrame {
         setQueryPanelVisible(queryAndResultSplitPane.getDividerLocation() == 0);
     }//GEN-LAST:event_toggleQueryActionPerformed
 
+    private void importMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuItemActionPerformed
+        LOG.info("importMenuItem: ");
+    }//GEN-LAST:event_importMenuItemActionPerformed
+
+    private void exportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuItemActionPerformed
+        LOG.info("exportMenuItem: ");
+        FileDialog dialog = new FileDialog(this);
+        dialog.setLocationRelativeTo(null);
+        dialog.setFilenameFilter( new BackupFormatFileFilter() );
+        
+
+        Table t = null;
+        Schema s = null;
+
+        TreePath path = tree.getSelectionPath();
+        if (path == null){
+
+        } else {
+            Object o = path.getLastPathComponent();
+            LOG.info("export: pathComponent=" + o);
+            if (o instanceof Table){
+                t = (Table)o;
+                dialog.setTitle("Export table to file");
+                dialog.setFile( t.getName() + BackupFormatFileFilter.EXTENSION);
+            } else if (o instanceof Schema){
+                dialog.setTitle("Export schema to file");
+                s = (Schema)o;
+                dialog.setFile( s.getName() + BackupFormatFileFilter.EXTENSION);
+            } else {
+                dialog.setTitle("Export ? to file");
+            }
+        }
+
+        dialog.setMode( FileDialog.SAVE );
+        dialog.setVisible(true);
+
+
+
+        if (dialog.getName().isEmpty()){
+
+        } else {
+
+            File file = new File(dialog.getDirectory(),dialog.getFile());
+
+            if (t != null){
+
+                ResultSetExporter exporter = new ResultSetExporter( sql.getDatabaseConnection() );
+                try {
+                    exporter.export(t, file);
+                    JOptionPane.showMessageDialog(this,"Exported: " + file.getAbsolutePath());
+                } catch (FileNotFoundException e) {
+                    JOptionPane.showMessageDialog(this,e.getMessage());
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+
+
+
+    }//GEN-LAST:event_exportMenuItemActionPerformed
+
+    private DatabaseConnection unsavedConnection;
+
+    private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
+        unsavedConnection = new DatabaseConnection();
+        unsavedConnection.setServer("localhost");
+        connectionPanel = new ConnectionDialog(unsavedConnection, this);
+        connectionPanel.setSize(440, 350);
+        connectionPanel.setLocationRelativeTo(null);
+        connectionPanel.setModal(true);
+        connectionPanel.setVisible(true);
+
+
+    }//GEN-LAST:event_newMenuItemActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentsMenuItem;
@@ -468,12 +582,13 @@ public class Viewer extends javax.swing.JFrame {
     private javax.swing.JScrollPane ddlSplitPane;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenu editMenu;
-    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JScrollPane jScrollPaneQuery;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JSplitPane mainSplitPane;
     private javax.swing.JMenuBar menuBar;
@@ -482,6 +597,7 @@ public class Viewer extends javax.swing.JFrame {
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JSplitPane queryAndResultSplitPane;
     private javax.swing.JTextPane queryPane;
+    private javax.swing.JMenuItem quitMenuItem;
     private javax.swing.JTable resultTable;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
@@ -496,5 +612,20 @@ public class Viewer extends javax.swing.JFrame {
     private javax.swing.JMenu viewMenu;
     private javax.swing.JCheckBoxMenuItem viewQueryMenuItem;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void accepted(DatabaseConnection connection) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void denied() {
+
+    }
+
+    @Override
+    public boolean canConnect(DatabaseConnection connection) {
+        return sql.getConnection() != null;
+    }
 
 }

@@ -17,7 +17,11 @@
  */
 package org.laukvik.sql.ddl;
 
-import java.io.File;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * jdbc:mysql://localhost:3306/hurra
@@ -33,10 +37,40 @@ public class DatabaseConnection {
     private String user;
     private String password;
     private String server;
+    private String port;
+    private String driver;
+    private String database;
 
     public DatabaseConnection() {
     }
 
+    public String getConnectionURL(){
+        return "jdbc:"+ driver +"://"+server +":"+port+"/"+database;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getDriver() {
+        return driver;
+    }
+
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
 
     public String getName() {
         return name;
@@ -77,4 +111,11 @@ public class DatabaseConnection {
     public void setServer(String server) {
         this.server = server;
     }
+
+
+    public Connection getConnection() throws SQLException, IOException {
+        Connection connection = DriverManager.getConnection(getConnectionURL(), getUser(), getPassword());
+        return connection;
+    }
+
 }

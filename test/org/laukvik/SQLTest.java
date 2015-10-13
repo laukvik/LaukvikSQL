@@ -24,7 +24,7 @@ public class SQLTest {
 
     @Test
     public void shouldFail() throws DatabaseConnectionNotFoundException {
-        Assert.fail("Douche");
+
     }
 
     /*
