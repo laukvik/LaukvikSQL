@@ -132,9 +132,15 @@ public class Exporter {
     }
 
     public void listQuery(String query){
-        try (Connection conn = databaseConnection.getConnection();
-                ResultSet rs = conn.createStatement().executeQuery(query)) {
+        try (
+                Connection conn = databaseConnection.getConnection();
+                ResultSet rs = conn.createStatement().executeQuery(query)
+        ) {
             int cols = rs.getMetaData().getColumnCount();
+            for (int x=0; x<cols; x++){
+                System.out.print( x > 0 ? "," : "" );
+                System.out.print(rs.getMetaData().getColumnLabel(x+1));
+            }
             while (rs.next()) {
                 for (int x=0; x<cols; x++){
                     System.out.print( x > 0 ? "," : "" );

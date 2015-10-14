@@ -40,55 +40,41 @@ public class SQL {
 
     public static void main(String[] args) {
         if (args.length == 0) {
-            /* Assume graphical application with no arguments */
-            SQL sql = new SQL();
-            SQL.openApplication( null );
+            /* Show usage */
+            SQL.listUsage();
 
         } else if (args.length == 1){
-            String action = args[0];
+            String option = args[0];
 
-            if (action.equalsIgnoreCase("-help")) {
+            if (option.equalsIgnoreCase("-help")) {
                 /*  Assume connection argument and open graphical application */
                 SQL.listUsage();
 
-            } else if (action.equalsIgnoreCase("-list")){
+            } else if (option.equalsIgnoreCase("-list")){
                 /* List all connections */
                 SQL.listConnections();
             } else {
-
-                String namedConnection = action;
-                DatabaseConnection db = null;
-                try {
-                    db = DatabaseConnection.read(namedConnection);
-                    SQL.openApplication(db);
-                } catch (DatabaseConnectionNotFoundException e) {
-                    System.out.println( e.getMessage() );
-                } catch (DatabaseConnectionInvalidException e) {
-                    System.out.println(e.getMessage());
-                }
+                SQL.listUsage();
             }
         } else  if (args.length == 2){
             // Find parameters
-            String action = args[0];
-            String namedConnection = args[1];
+            String namedConnection = args[0];
+            String option = args[1];
             try {
                 // Find named connection before continuing
                 DatabaseConnection db = DatabaseConnection.read(namedConnection);
                 // Check arguments
-                if (action.equalsIgnoreCase("-tables")){
+                if (option.equalsIgnoreCase("-tables")){
                     Analyzer a = new Analyzer();
-
                     SQL.listTables( db );
 
-                } else if (action.equalsIgnoreCase("-functions")){
-
+                } else if (option.equalsIgnoreCase("-functions")){
                     SQL.listFunctions( db );
 
-                } else if (action.equalsIgnoreCase("-views")){
-
+                } else if (option.equalsIgnoreCase("-views")){
                     SQL.listViews( db.getSchema(), db);
 
-                } else if (action.equalsIgnoreCase("-export")){
+                } else if (option.equalsIgnoreCase("-export")){
 
                     Exporter exporter = new Exporter(db);
                     try {
@@ -99,21 +85,20 @@ public class SQL {
                         e.printStackTrace();
                     }
 
-                } else if (action.startsWith("-export=")){
-
-                    String filename = action.split("=")[1];
-
+                } else if (option.startsWith("-export=")){
+                    String filename = option.split("=")[1];
                     SQL.exportFile(db, new File(filename));
 
-                } else if (action.startsWith("-import=")){
-
+                } else if (option.startsWith("-import=")){
                     String filename = args[0].split("=")[1];
                     Importer importer = new Importer(db);
                     importer.importDatabase(new File(filename));
 
-                } else if (action.startsWith("-query=")){
+                } else if (option.startsWith("-query=")){
+                    SQL.listQuery(db, option.split("=")[1]);
 
-                    SQL.listQuery(db, action.split("=")[1]);
+                } else if (option.startsWith("-app")){
+                    SQL.openApplication(db);
                 }
             } catch (DatabaseConnectionInvalidException e) {
                 System.out.println( e.getMessage() );
@@ -126,13 +111,13 @@ public class SQL {
     }
 
     public static void listUsage(){
-        System.out.println("Usage: sql <option> connection");
+        System.out.println("Usage: sql connection [option]");
         System.out.println("  -list              displays all connections registered");
         System.out.println("  -tables            displays all tables");
         System.out.println("  -functions         displays all user functions");
         System.out.println("  -views             displays all views");
         System.out.println("  -system            displays all system functions");
-        System.out.println("  -query=<COMMAND>   runs the query and displays the results");
+        System.out.println("  -query=<value>     runs the query and displays the results");
         System.out.println("  -export            creates scripts used to import in other databases");
         System.out.println("  -export=file       creates scripts file used to import in other databases");
         System.out.println("  -import=file       runs scrips from file");
