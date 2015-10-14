@@ -74,14 +74,14 @@
         </exec>
     </target>
 
-    <target name="jar" depends="clean">
+    <target name="compile" depends="clean">
         <echo>Building number: ${build.number}</echo>
         <mkdir dir="${build.dir}"/>
         <javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}" classpathref="project.classpath"/>
         <javac includeantruntime="false" srcdir="${test.dir}" destdir="${build.dir}" classpathref="project.classpath"/>
     </target>
 
-    <target name="dist" depends="jar">
+    <target name="jar" depends="compile">
         <jar jarfile="${dist.dir}/laukvik-sql.jar" basedir="${build.dir}">
             <manifest>
                 <attribute name="Main-Class" value="${app.class}"/>
@@ -91,7 +91,7 @@
 
     <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="${lib.dir}/appbundler.jar" />
 
-    <target name="osx" depends="dist">
+    <target name="osx" depends="jar">
         <bundleapp name="${app.name}"
                    displayname="${app.name}"
                    outputdirectory="${dist.dir}"
@@ -148,7 +148,7 @@
     </target>
 
 
-    <target name="run" depends="dist">
+    <target name="run" depends="jar">
         <java jar="${dist.dir}/laukvik-sql.jar" fork="true"/>
     </target>
 

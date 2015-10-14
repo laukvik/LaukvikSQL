@@ -3,6 +3,7 @@ package org.laukvik.sql;
 import org.laukvik.csv.CsvWriter;
 import org.laukvik.csv.MetaData;
 import org.laukvik.sql.ddl.DatabaseConnection;
+import org.laukvik.sql.ddl.Schema;
 import org.laukvik.sql.ddl.Table;
 
 import java.io.*;
@@ -25,6 +26,19 @@ public class ResultSetExporter {
 
     public ResultSetExporter(DatabaseConnection databaseConnection ){
         this.databaseConnection = databaseConnection;
+    }
+
+    public void exportTables( File directory ) throws IOException, SQLException, DatabaseConnectionNotFoundException {
+        LOG.info("Exporting all tables to " + directory.getParent());
+        SQL sql = new SQL();
+        sql.openConnectionByName("default");
+
+        Schema s = sql.getSchema();
+        for (Table t : s.getTables()){
+            //LOG.info("Table: " + t.getName());
+            File file = new File( directory.getAbsolutePath(), t.getName() + ".csv" );
+            export(t, file);
+        }
     }
 
     public void export( Table table, File file ) throws FileNotFoundException {

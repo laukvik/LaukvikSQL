@@ -21,6 +21,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -29,6 +30,7 @@ import javax.swing.tree.TreePath;
 
 import org.laukvik.csv.CSV;
 import org.laukvik.csv.CsvWriter;
+import org.laukvik.sql.DatabaseConnectionNotFoundException;
 import org.laukvik.sql.ResultSetExporter;
 import org.laukvik.sql.SQL;
 import org.laukvik.sql.ddl.DatabaseConnection;
@@ -506,10 +508,9 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         FileDialog dialog = new FileDialog(this);
         dialog.setLocationRelativeTo(null);
         dialog.setFilenameFilter( new BackupFormatFileFilter() );
-        
 
-        Table t = null;
-        Schema s = null;
+
+
 
         TreePath path = tree.getSelectionPath();
         if (path == null){
@@ -518,43 +519,70 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
             Object o = path.getLastPathComponent();
             LOG.info("export: pathComponent=" + o);
             if (o instanceof Table){
-                t = (Table)o;
+                Table t = (Table)o;
                 dialog.setTitle("Export table to file");
                 dialog.setFile( t.getName() + BackupFormatFileFilter.EXTENSION);
-            } else if (o instanceof Schema){
-                dialog.setTitle("Export schema to file");
-                s = (Schema)o;
-                dialog.setFile( s.getName() + BackupFormatFileFilter.EXTENSION);
-            } else {
-                dialog.setTitle("Export ? to file");
-            }
-        }
+                dialog.setMode( FileDialog.SAVE );
+                dialog.setVisible(true);
+                if (dialog.getName().isEmpty()){
+                    JOptionPane.showMessageDialog(this,"You didnt specify a filename!");
+                } else {
+                    File file = new File(dialog.getDirectory(),dialog.getFile());
+                    ResultSetExporter exporter = new ResultSetExporter( sql.getDatabaseConnection() );
+                    try {
+                        exporter.export(t, file);
+                        JOptionPane.showMessageDialog(this,"Exported: " + file.getAbsolutePath());
 
-        dialog.setMode( FileDialog.SAVE );
-        dialog.setVisible(true);
-
-
-
-        if (dialog.getName().isEmpty()){
-
-        } else {
-
-            File file = new File(dialog.getDirectory(),dialog.getFile());
-
-            if (t != null){
-
-                ResultSetExporter exporter = new ResultSetExporter( sql.getDatabaseConnection() );
-                try {
-                    exporter.export(t, file);
-                    JOptionPane.showMessageDialog(this,"Exported: " + file.getAbsolutePath());
-                } catch (FileNotFoundException e) {
-                    JOptionPane.showMessageDialog(this,e.getMessage());
-                    e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        JOptionPane.showMessageDialog(this,e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
 
+            } else if (o instanceof Schema){
+                Schema s = (Schema)o;
+                System.setProperty("apple.awt.fileDialogForDirectories", "true");
+                dialog.setTitle("Export all tables to file");
+                dialog.setMode( FileDialog.SAVE );
+                dialog.setVisible(true);
+
+                /*
+                JFileChooser fc = new JFileChooser();
+                fc.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
+                fc.showSaveDialog(this);
+*/
+
+                if (dialog.getName().isEmpty()){
+                    JOptionPane.showMessageDialog(this,"You didn't specify a filename!");
+                } else if (dialog.getDirectory() == null){
+
+                } else {
+
+                    File file = new File(dialog.getDirectory(),dialog.getFile());
+                    file.mkdir();
+                    ResultSetExporter exporter = new ResultSetExporter( sql.getDatabaseConnection() );
+
+                    try {
+                        exporter.exportTables(file);
+                        JOptionPane.showMessageDialog(this,"Exported: " + file.getAbsolutePath());
+                    } catch (FileNotFoundException e) {
+                        JOptionPane.showMessageDialog(this,e.getMessage());
+                        e.printStackTrace();
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(this,e.getMessage());
+                        e.printStackTrace();
+                    } catch (DatabaseConnectionNotFoundException e) {
+                        JOptionPane.showMessageDialog(this,e.getMessage());
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(this,e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                }
+                System.setProperty("apple.awt.fileDialogForDirectories", "false");
             }
         }
-
 
 
 

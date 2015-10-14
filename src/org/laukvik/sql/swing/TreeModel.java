@@ -70,6 +70,10 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
         setSQL(sql);
     }
 
+    public String getTableRootNode(){
+        return tables;
+    }
+
     public void setSQL(SQL sql) {
         this.sql = sql;
         schema = sql.getSchema();
