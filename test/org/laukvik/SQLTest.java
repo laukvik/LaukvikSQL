@@ -3,8 +3,7 @@ package org.laukvik;
 import org.junit.*;
 import org.laukvik.sql.DatabaseConnectionNotFoundException;
 import org.laukvik.sql.SQL;
-import org.laukvik.sql.ddl.DatabaseConnection;
-import org.laukvik.sql.ddl.Schema;
+import org.laukvik.sql.DatabaseConnection;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class SQLTest {
         Assert.assertEquals(4,conns.size());
         System.out.println("Connections: " + conns.size());
         for (DatabaseConnection c : conns){
-            System.out.println(c.getName());
+            System.out.println(c.getFilename());
         }
     }
 

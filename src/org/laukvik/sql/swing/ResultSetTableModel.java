@@ -17,6 +17,7 @@
  */
 package org.laukvik.sql.swing;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
+
+import org.laukvik.sql.DatabaseConnection;
 import org.laukvik.sql.SQL;
 import org.laukvik.sql.ddl.Table;
 
@@ -36,44 +39,55 @@ import org.laukvik.sql.ddl.Table;
  */
 public class ResultSetTableModel implements TableModel {
 
+    private static final Logger LOG = Logger.getLogger(ResultSetTableModel.class.getName());
+
     private final Table table;
-    private final SQL sql;
     private final List<TableModelListener> listeners;
     private ResultSet rs;
     private int rowIndex;
     private int maxRows;
-    private static final Logger LOG = Logger.getLogger(ResultSetTableModel.class.getName());
+    private DatabaseConnection db;
+    private Connection conn;
 
-    public ResultSetTableModel(Table table, SQL sql) {
+    public ResultSetTableModel(Table table, DatabaseConnection db) {
+        this.db = db;
         this.table = table;
-        this.sql = sql;
         this.listeners = new ArrayList<>();
-        Connection c = sql.getConnection();
-        Statement st;
         try {
-            st = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
-            try {
-                rowIndex = 0;
-                maxRows = 0;
-                rs = st.executeQuery("SELECT count(*) FROM " + table.getName());
+            conn = db.getConnection();
+            Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
+            conn = db.getConnection();
+            rowIndex = 0;
+            maxRows = 0;
+            rs = st.executeQuery("SELECT count(*) FROM " + table.getName());
 
-                if (rs.next()) {
-                    maxRows = rs.getInt(1);
-                    LOG.log(Level.FINE, "Found {0} in table {1}", new Object[]{maxRows, table.getName()});
-                } else {
-                    LOG.log(Level.FINE, "Could not find table {0}", table.getName());
-                }
-
-                rs = st.executeQuery("SELECT * FROM " + table.getName() + "");
-                rs.next();
-                rowIndex = 0;
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (rs.next()) {
+                maxRows = rs.getInt(1);
+                LOG.log(Level.FINE, "Found {0} in table {1}", new Object[]{maxRows, table.getName()});
+            } else {
+                LOG.log(Level.FINE, "Could not find table {0}", table.getName());
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ResultSetTableModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
+            rs = st.executeQuery("SELECT * FROM " + table.getName() + "");
+            rs.next();
+            rowIndex = 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void close(){
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

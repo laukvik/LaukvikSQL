@@ -28,12 +28,7 @@ import javax.swing.*;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
 
-import org.laukvik.csv.CSV;
-import org.laukvik.csv.CsvWriter;
-import org.laukvik.sql.DatabaseConnectionNotFoundException;
-import org.laukvik.sql.ResultSetExporter;
-import org.laukvik.sql.SQL;
-import org.laukvik.sql.ddl.DatabaseConnection;
+import org.laukvik.sql.*;
 import org.laukvik.sql.ddl.Function;
 import org.laukvik.sql.ddl.Schema;
 import org.laukvik.sql.ddl.Sqlable;
@@ -53,17 +48,18 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
     private final int DEFAULT_DIVIDER_SIZE;
     private final int DEFAULT_TREE_WIDTH = 250;
 
-    private SQL sql = null;
+    //private SQL sql = null;
+    private DatabaseConnection db;
     private TreeModel treeModel;
     private JPanel emptyPanel;
     private DiagramPanel diagramPanel;
     private JScrollPane diagramScroll;
     private ConnectionDialog connectionPanel;
-
+    private ResultSetTableModel resultModel;
     /**
      * Creates new form SQL
      */
-    public Viewer(SQL sql) {
+    public Viewer() {
         super();
         emptyPanel = new JPanel();
 
@@ -97,7 +93,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         resultTable.getTableHeader().setBackground(UIManager.getColor("Label.background"));
         resultTable.getTableHeader().setDefaultRenderer(new SqlTableHeaderRenderer());
 
-        setSQL(sql);
+
         Dimension s = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension s70 = new Dimension(Math.round(s.width * 0.7f), Math.round(s.height * 0.7f));
         setSize(s70);
@@ -109,24 +105,34 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         setDefinitionPanelVisible(false);
         jToolBar1.setVisible(false);
         setSize(Toolkit.getDefaultToolkit().getScreenSize());
-
+        treeModel = new TreeModel();
+        //setDatabaseConnection(db);
     }
 
-    public void setSQL(SQL sql) {
-        this.sql = sql;
-        treeModel = new TreeModel(sql);
+    public void setDatabaseConnection(DatabaseConnection db) {
+        this.db = db;
+        treeModel = new TreeModel();
+        treeModel.setDatabaseConnection(db);
         tree.setCellRenderer(treeModel);
         tree.setModel(treeModel);
 
         diagramPanel.removeAll();
-        if (sql.getSchema() == null) {
+        if (db == null){
+
+        } else if (db.getSchema() == null) {
             setTitle("");
         } else {
-            for (Table t : sql.getSchema().getTables()) {
+            Analyzer a = new Analyzer();
+            Schema s = new Schema();
+            try {
+                s = a.findSchema( db.getSchema(), db );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for (Table t : s.getTables()) {
                 diagramPanel.addTable(t);
             }
             tree.setSelectionPath(new TreePath(treeModel.getRoot()));
-            setTitle(sql.getDatabaseConnection().getName());
         }
 
         diagramPanel.autoLayout();
@@ -140,11 +146,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
 
     public void openFunction(Function function) {
         LOG.info("Function: " + function.getName());
-        try {
-            sql.displayFunction(function);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void openView(View view) {
@@ -157,8 +159,13 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         mainSplitPane.setDividerLocation(DEFAULT_TREE_WIDTH);
         // Open query
         queryPane.setText("SELECT * FROM " + t.getName());
+
+        if (resultModel != null){
+            resultModel.close();
+        }
+
         // Run query
-        ResultSetTableModel resultModel = new ResultSetTableModel(t, sql);
+        resultModel = new ResultSetTableModel(t, db);
 
         resultTable.setModel(resultModel);
         // Open table definition
@@ -528,7 +535,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
                     JOptionPane.showMessageDialog(this,"You didnt specify a filename!");
                 } else {
                     File file = new File(dialog.getDirectory(),dialog.getFile());
-                    ResultSetExporter exporter = new ResultSetExporter( sql.getDatabaseConnection() );
+                    Exporter exporter = new Exporter( db );
                     try {
                         exporter.export(t, file);
                         JOptionPane.showMessageDialog(this,"Exported: " + file.getAbsolutePath());
@@ -560,7 +567,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
 
                     File file = new File(dialog.getDirectory(),dialog.getFile());
                     file.mkdir();
-                    ResultSetExporter exporter = new ResultSetExporter( sql.getDatabaseConnection() );
+                    Exporter exporter = new Exporter( db );
 
                     try {
                         exporter.exportTables(file);
@@ -653,7 +660,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
 
     @Override
     public boolean canConnect(DatabaseConnection connection) {
-        return sql.getConnection() != null;
+        return db.canConnect();
     }
 
 }

@@ -6,6 +6,6 @@ package org.laukvik.sql;
 public class DatabaseConnectionNotFoundException extends Exception {
 
     public DatabaseConnectionNotFoundException(String name){
-        super("Could not find named connection '" + name + "'");
+        super("Could not find configuration file for the named connection '" + name + "'!");
     }
 }

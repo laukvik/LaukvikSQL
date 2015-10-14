@@ -17,7 +17,7 @@
  */
 package org.laukvik.sql.swing;
 
-import org.laukvik.sql.ddl.DatabaseConnection;
+import org.laukvik.sql.DatabaseConnection;
 
 /**
  *

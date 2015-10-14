@@ -18,6 +18,7 @@
 package org.laukvik.sql.swing;
 
 import java.awt.Component;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -26,6 +27,9 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
+
+import org.laukvik.sql.Analyzer;
+import org.laukvik.sql.DatabaseConnection;
 import org.laukvik.sql.SQL;
 import org.laukvik.sql.ddl.Function;
 import org.laukvik.sql.ddl.Schema;
@@ -42,7 +46,7 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
 
     private static final Logger LOG = Logger.getLogger(TreeModel.class.getName());
     private final List<TreeModelListener> listeners;
-    private SQL sql;
+    private DatabaseConnection db;
     private Schema schema;
     private String tables;
     private String views;
@@ -56,7 +60,7 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     private Icon ICON_VIEW = ResourceManager.getIcon("view.gif" );
     private Icon ICON_FUNCTION = ResourceManager.getIcon("table.gif" );
 
-    public TreeModel(SQL sql) {
+    public TreeModel() {
         super();
         listeners = new ArrayList<>();
         schema = null;
@@ -67,16 +71,23 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
         timeFunctions = "Time Functions";
         stringFunctions = "String Functions";
         numericFunctions = "Numeric Functions";
-        setSQL(sql);
+        schema = new Schema();
+        //setDatabaseConnection(db);
     }
 
     public String getTableRootNode(){
         return tables;
     }
 
-    public void setSQL(SQL sql) {
-        this.sql = sql;
-        schema = sql.getSchema();
+    public void setDatabaseConnection(DatabaseConnection db) {
+        this.db = db;
+        Analyzer a = new Analyzer();
+
+        try {
+            schema = a.findSchema(db.getSchema(),db);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

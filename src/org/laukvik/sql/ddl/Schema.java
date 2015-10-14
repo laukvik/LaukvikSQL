@@ -68,7 +68,7 @@ public class Schema implements Sqlable {
     }
 
     public boolean isDefault(){
-        return name.isEmpty();
+        return name == null ? true : name.isEmpty();
     }
 
     public void addFunction(Function function){

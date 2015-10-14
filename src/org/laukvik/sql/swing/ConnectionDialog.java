@@ -18,7 +18,7 @@
 package org.laukvik.sql.swing;
 
 import javax.swing.JOptionPane;
-import org.laukvik.sql.ddl.DatabaseConnection;
+import org.laukvik.sql.DatabaseConnection;
 
 /**
  *
@@ -66,7 +66,7 @@ public class ConnectionDialog extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
         testButton = new javax.swing.JButton();
 
-        setTitle(connection.getName());
+        setTitle(connection.getFilename());
         setAlwaysOnTop(true);
         setResizable(false);
         setSize(new java.awt.Dimension(430, 330));

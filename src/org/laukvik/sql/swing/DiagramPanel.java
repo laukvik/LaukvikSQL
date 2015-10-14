@@ -151,9 +151,9 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
         /*
          foreignKeys.clear();
          for (Table t : tables) {
-         //			System.out.println( "Checking table " + t.getName() );
+         //			System.out.println( "Checking table " + t.getFilename() );
          for (Column c : t.getColumns()) {
-         //				System.out.println( "Checking column " + c.getName() );
+         //				System.out.println( "Checking column " + c.getFilename() );
          if (c.getForeignKey() != null) {
          //					System.out.println( "Found link: " );
          Column primaryKey = findPrimaryKey(c.foreignKey);
@@ -426,7 +426,7 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
                 minusX = startPoint.x - p.x;
                 minusY = startPoint.y - p.y;
                 setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//				System.out.println( "mouseOver: " + t.getName() );
+//				System.out.println( "mouseOver: " + t.getFilename() );
                 return;
             }
         }
@@ -448,7 +448,7 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
          for (int y = 0; y < tables.size(); y++) {
          Point p = locations.get(y);
          Table t = tables.get(y);
-         csv.foundRow(y, new String[]{p.x + "", p.y + "", t.getName()});
+         csv.foundRow(y, new String[]{p.x + "", p.y + "", t.getFilename()});
          }
          csv.write(file);
          */

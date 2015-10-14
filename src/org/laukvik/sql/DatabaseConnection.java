@@ -15,13 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package org.laukvik.sql.ddl;
+package org.laukvik.sql;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * jdbc:mysql://localhost:3306/hurra
@@ -30,6 +35,8 @@ import java.sql.SQLException;
  * @author Morten Laukvik <morten@laukvik.no>
  */
 public class DatabaseConnection {
+
+    private final static Logger LOG = Logger.getLogger(DatabaseConnection.class.getName());
 
 
     private String name;
@@ -40,8 +47,17 @@ public class DatabaseConnection {
     private String port;
     private String driver;
     private String database;
+    private String schema;
 
     public DatabaseConnection() {
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 
     public String getConnectionURL(){
@@ -72,11 +88,11 @@ public class DatabaseConnection {
         this.database = database;
     }
 
-    public String getName() {
+    public String getFilename() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setFilename(String name) {
         this.name = name;
     }
 
@@ -116,6 +132,43 @@ public class DatabaseConnection {
     public Connection getConnection() throws SQLException, IOException {
         Connection connection = DriverManager.getConnection(getConnectionURL(), getUser(), getPassword());
         return connection;
+    }
+
+    public boolean canConnect(){
+        try(
+                Connection conn = getConnection();
+
+                ){
+            return true;
+        } catch(Exception e){
+            return false;
+        }
+    }
+
+    public static DatabaseConnection read( String namedConnection ) throws DatabaseConnectionNotFoundException, DatabaseConnectionInvalidException {
+        DatabaseConnection db = new DatabaseConnection();
+        // Read settings file
+        Properties p = new Properties();
+        File f = new File( SQL.getConnectionsHome(),  namedConnection + ".properties");
+        try {
+            p.load(new FileInputStream(f));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new DatabaseConnectionNotFoundException(namedConnection);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new DatabaseConnectionInvalidException(namedConnection);
+        }
+        db.setFilename(namedConnection);
+        db.setUrl(p.getProperty("url"));
+        db.setUser(p.getProperty("user"));
+        db.setPassword(p.getProperty("password"));
+        db.setPort(p.getProperty("port"));
+        db.setServer(p.getProperty("server"));
+        db.setDatabase(p.getProperty("database"));
+        db.setDriver( p.getProperty("driver"));
+        db.setSchema(p.getProperty("schema"));
+        return db;
     }
 
 }
