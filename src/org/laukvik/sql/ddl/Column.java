@@ -61,6 +61,9 @@ public abstract class Column {
 
 
     public Column(String name) {
+        if (name == null || name.trim().isEmpty()){
+            throw new IllegalArgumentException("Column name cant be null or empty!");
+        }
         this.name = name;
     }
 

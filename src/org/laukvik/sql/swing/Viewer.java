@@ -48,7 +48,6 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
     private final int DEFAULT_DIVIDER_SIZE;
     private final int DEFAULT_TREE_WIDTH = 250;
 
-    //private SQL sql = null;
     private DatabaseConnection db;
     private TreeModel treeModel;
     private JPanel emptyPanel;
@@ -56,6 +55,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
     private JScrollPane diagramScroll;
     private ConnectionDialog connectionPanel;
     private ResultSetTableModel resultModel;
+
     /**
      * Creates new form SQL
      */
@@ -109,10 +109,17 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         //setDatabaseConnection(db);
     }
 
+    /**
+     * Connects to the specified database and updates the user interface
+     *
+     * @param db
+     */
     public void setDatabaseConnection(DatabaseConnection db) {
+        LOG.info("Setting databaseConnection to " + db);
         this.db = db;
-        treeModel = new TreeModel();
+
         treeModel.setDatabaseConnection(db);
+
         tree.setCellRenderer(treeModel);
         tree.setModel(treeModel);
 
@@ -122,18 +129,21 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         } else if (db.getSchema() == null) {
             setTitle("");
         } else {
+            /*
             Analyzer a = new Analyzer();
             Schema s = new Schema();
             try {
                 s = a.findSchema( db.getSchema(), db );
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-            for (Table t : s.getTables()) {
+            }*/
+            for (Table t : treeModel.getSchema().getTables()) {
                 diagramPanel.addTable(t);
             }
-            tree.setSelectionPath(new TreePath(treeModel.getRoot()));
+
         }
+
+        tree.setSelectionPath(new TreePath(treeModel.getRoot()));
 
         diagramPanel.autoLayout();
 
@@ -524,7 +534,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
 
         } else {
             Object o = path.getLastPathComponent();
-            LOG.info("export: pathComponent=" + o);
+            LOG.info("exportTableCSV: pathComponent=" + o);
             if (o instanceof Table){
                 Table t = (Table)o;
                 dialog.setTitle("Export table to file");
@@ -537,7 +547,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
                     File file = new File(dialog.getDirectory(),dialog.getFile());
                     Exporter exporter = new Exporter( db );
                     try {
-                        exporter.export(t, file);
+                        exporter.exportTableCSV(t, file);
                         JOptionPane.showMessageDialog(this,"Exported: " + file.getAbsolutePath());
 
                     } catch (FileNotFoundException e) {
@@ -570,7 +580,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
                     Exporter exporter = new Exporter( db );
 
                     try {
-                        exporter.exportTables(file);
+                        exporter.exportTablesAsCSV(file);
                         JOptionPane.showMessageDialog(this,"Exported: " + file.getAbsolutePath());
                     } catch (FileNotFoundException e) {
                         JOptionPane.showMessageDialog(this,e.getMessage());

@@ -1,4 +1,4 @@
-package org.laukvik;
+package org.laukvik.sql;
 
 import org.junit.*;
 import org.laukvik.sql.DatabaseConnectionNotFoundException;

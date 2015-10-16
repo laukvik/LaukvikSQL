@@ -13,6 +13,24 @@ public class ForeignKey {
         this.column = column;
     }
 
+    private ForeignKey(){
+
+    }
+
+    public static ForeignKey parse( String value ){
+        if (value == null || value.trim().isEmpty()){
+            return null;
+        }
+        if (value.contains("(") || value.contains(")")){
+            return null;
+        } else {
+            ForeignKey fk = new ForeignKey();
+            fk.table = value.split("\\(")[0];
+            fk.column = value.split("\\(")[1].split("\\)")[0];
+            return fk;
+        }
+    }
+
     public String getTable() {
         return table;
     }

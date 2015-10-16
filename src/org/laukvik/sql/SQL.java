@@ -18,6 +18,7 @@
 package org.laukvik.sql;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -42,7 +43,7 @@ public class SQL {
         if (args.length == 0) {
             /* Show usage */
             SQL.listUsage();
-
+            System.exit(1);
         } else if (args.length == 1){
             String option = args[0];
 
@@ -74,7 +75,7 @@ public class SQL {
                 } else if (option.equalsIgnoreCase("-views")){
                     SQL.listViews( db.getSchema(), db);
 
-                } else if (option.equalsIgnoreCase("-export")){
+                } else if (option.equalsIgnoreCase("-exportTableCSV")){
 
                     Exporter exporter = new Exporter(db);
                     try {
@@ -85,7 +86,11 @@ public class SQL {
                         e.printStackTrace();
                     }
 
-                } else if (option.startsWith("-export=")){
+                } else if (option.startsWith("-function=")){
+                    String functionName = option.split("=")[1];
+                    SQL.displayFunction(functionName,db);
+
+                } else if (option.startsWith("-exportTableCSV=")){
                     String filename = option.split("=")[1];
                     SQL.exportFile(db, new File(filename));
 
@@ -99,6 +104,27 @@ public class SQL {
 
                 } else if (option.startsWith("-app")){
                     SQL.openApplication(db);
+
+                } else if (option.startsWith("-system")){
+                    SQL.listSystemFunctions(db);
+
+                } else if (option.startsWith("-string")){
+                    SQL.listStringFunctions(db);
+
+                } else if (option.startsWith("-date")){
+                    SQL.listDateTimeFunctions(db);
+
+                } else if (option.startsWith("-numeric")){
+                    SQL.listNumericFunctions(db);
+
+                } else if (option.startsWith("-backup")){
+                    SQL.backup(db);
+
+                } else if (option.startsWith("-restore")){
+                    SQL.restore(db);
+
+                } else {
+                    SQL.listUsage();
                 }
             } catch (DatabaseConnectionInvalidException e) {
                 System.out.println( e.getMessage() );
@@ -110,21 +136,49 @@ public class SQL {
         }
     }
 
+    /**
+     *
+     * Export
+     *
+     * exportTableCSV=csv
+     * exportTableCSV=sql
+     * exportTableCSV=table1,table2
+     *
+     * -backup=table1,table2
+     *
+     */
     public static void listUsage(){
         System.out.println("Usage: sql connection [option]");
         System.out.println("  -list              displays all connections registered");
         System.out.println("  -tables            displays all tables");
         System.out.println("  -functions         displays all user functions");
-        System.out.println("  -views             displays all views");
+        System.out.println("  -numeric           displays all numeric functions");
+        System.out.println("  -string            displays all string functions");
+        System.out.println("  -date              displays all user functions");
         System.out.println("  -system            displays all system functions");
+        System.out.println("  -function=<value>  display details about function");
+        System.out.println("  -views             displays all views");
         System.out.println("  -query=<value>     runs the query and displays the results");
-        System.out.println("  -export            creates scripts used to import in other databases");
-        System.out.println("  -export=file       creates scripts file used to import in other databases");
+        System.out.println("  -exportTableCSV            creates scripts used to import in other databases");
+        System.out.println("  -exportTableCSV=file       creates scripts file used to import in other databases");
         System.out.println("  -import=file       runs scrips from file");
     }
 
     public static void exportFile(DatabaseConnection db, File file) {
         Exporter exporter = new Exporter(db);
+    }
+
+    public static void displayFunction(String functionName, DatabaseConnection db) {
+        Analyzer a = new Analyzer();
+        Function f = new Function( functionName );
+        try {
+            f = a.findFunctionDetails(f,db);
+            System.out.println( f.getDetails() );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void listQuery(DatabaseConnection db, String query) {
@@ -142,7 +196,52 @@ public class SQL {
     public static void listFunctions(DatabaseConnection db){
         Analyzer a = new Analyzer();
         for (Function f : a.findUserFunctions(db.getSchema(), db )){
-            System.out.println(f.getName());
+            displayFunction(f);
+        }
+    }
+
+    private static void displayFunction(Function f){
+        System.out.print(f.getName());
+        System.out.print(",");
+        System.out.print("[");
+        int x=0;
+        for (FunctionParameter fp : f.getParameters()){
+            if (x>0){
+                System.out.print(",");
+            }
+            System.out.print( fp.getName());
+            x++;
+        }
+
+        System.out.print("]");
+        System.out.println();
+    }
+
+    public static void listSystemFunctions(DatabaseConnection db){
+        Analyzer a = new Analyzer();
+        for (Function f : a.listSystemFunctions(db)){
+            displayFunction(f);
+        }
+    }
+
+    public static void listStringFunctions(DatabaseConnection db){
+        Analyzer a = new Analyzer();
+        for (Function f : a.listStringFunctions(db)){
+            displayFunction(f);
+        }
+    }
+
+    public static void listDateTimeFunctions(DatabaseConnection db){
+        Analyzer a = new Analyzer();
+        for (Function f : a.listTimeDateFunctions(db)){
+            displayFunction(f);
+        }
+    }
+
+    public static void listNumericFunctions(DatabaseConnection db){
+        Analyzer a = new Analyzer();
+        for (Function f : a.listNumbericFunctions(db)){
+            displayFunction(f);
         }
     }
 
@@ -186,6 +285,24 @@ public class SQL {
         }
         return items;
     }
+
+    public static void backup(DatabaseConnection db, String... tables){
+        Exporter exporter = new Exporter(db);
+        exporter.backup(tables);
+    }
+
+    public static void restore(DatabaseConnection db, String... tables) {
+        Importer imp = new Importer(db);
+        try {
+            if (tables == null){
+
+            }
+            imp.importCSV(null, "Activity");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Opens a new Graphical application with the specified database connection

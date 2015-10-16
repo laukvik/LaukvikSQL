@@ -6,7 +6,7 @@ package org.laukvik.sql;
 public class DatabaseExportFailedException extends Exception{
 
     public DatabaseExportFailedException(Exception e, DatabaseConnection db) {
-        super("Failed to export database: " + db.getFilename());
+        super("Failed to exportTableCSV database: " + db.getFilename());
         setStackTrace(e.getStackTrace());
     }
 }

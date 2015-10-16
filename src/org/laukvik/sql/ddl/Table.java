@@ -33,6 +33,9 @@ public class Table implements Sqlable {
     private Schema schema;
 
     public Table(String name) {
+        if (name == null || name.trim().isEmpty()){
+            throw new IllegalArgumentException("Table name cant be null or empty!");
+        }
         this.name = name;
         columns = new ArrayList<>();
     }
@@ -54,6 +57,7 @@ public class Table implements Sqlable {
     }
 
     public void addColumn(Column c) {
+        c.setTable(this);
         columns.add(c);
     }
 

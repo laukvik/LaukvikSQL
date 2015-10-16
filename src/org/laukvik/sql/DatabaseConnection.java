@@ -134,10 +134,13 @@ public class DatabaseConnection {
         return connection;
     }
 
+    public String toString(){
+        return "named connection '" + name + "'";
+    }
+
     public boolean canConnect(){
         try(
                 Connection conn = getConnection();
-
                 ){
             return true;
         } catch(Exception e){

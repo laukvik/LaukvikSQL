@@ -63,7 +63,6 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
     public TreeModel() {
         super();
         listeners = new ArrayList<>();
-        schema = null;
         tables = "Tables";
         views = "Views";
         functions = "Functions";
@@ -72,19 +71,30 @@ public class TreeModel extends DefaultTreeCellRenderer implements javax.swing.tr
         stringFunctions = "String Functions";
         numericFunctions = "Numeric Functions";
         schema = new Schema();
-        //setDatabaseConnection(db);
+    }
+
+    public Schema getSchema() {
+        return schema;
     }
 
     public String getTableRootNode(){
         return tables;
     }
 
+    /**
+     *
+     *
+     * @param db
+     */
     public void setDatabaseConnection(DatabaseConnection db) {
-        this.db = db;
-        Analyzer a = new Analyzer();
-
         try {
+            this.db = db;
+            Analyzer a = new Analyzer();
             schema = a.findSchema(db.getSchema(),db);
+            TreeModelEvent evt = new TreeModelEvent( this, new TreePath( schema ) );
+            for (TreeModelListener l : listeners){
+                l.treeStructureChanged( evt );
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
