@@ -23,13 +23,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
-
 import org.laukvik.sql.*;
-import org.laukvik.sql.ddl.Function;
+import org.laukvik.sql.ddl.*;
 import org.laukvik.sql.ddl.Schema;
 import org.laukvik.sql.ddl.Sqlable;
 import org.laukvik.sql.ddl.Table;
@@ -55,6 +55,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
     private JScrollPane diagramScroll;
     private ConnectionDialog connectionPanel;
     private ResultSetTableModel resultModel;
+    private ResourceBundle bundle;
 
     /**
      * Creates new form SQL
@@ -62,7 +63,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
     public Viewer() {
         super();
         emptyPanel = new JPanel();
-
+        bundle = ResourceBundle.getBundle("messages");
         initComponents();
 
         newMenuItem.setAccelerator(ResourceManager.getKeyStroke(KeyEvent.VK_N));

@@ -1,4 +1,4 @@
-package org.laukvik.org.laukvik.sql.ddl;
+package org.laukvik.sql;
 
 import org.junit.Test;
 import org.laukvik.sql.ddl.Table;

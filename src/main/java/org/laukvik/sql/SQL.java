@@ -17,29 +17,30 @@
  */
 package org.laukvik.sql;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.laukvik.sql.ddl.*;
 import org.laukvik.sql.swing.DatabaseConnectionFileFilter;
 import org.laukvik.sql.swing.Viewer;
+import org.laukvik.sql.ddl.*;
 
 /**
  * Command line app
  *
- * Database
- * - Catalog
- *   - Schema
  * @author Morten Laukvik
  */
 public class SQL {
 
-    private final static Logger LOG = Logger.getLogger(SQL.class.getName());
+    private static final Logger LOG = Logger.getLogger("org.laukvik.sql");
 
     public static void main(String[] args) {
+        //ResourceBundle bundle = ResourceBundle.getBundle("messages");
+
         if (args.length == 0) {
             /* Show usage */
             SQL.listUsage();
@@ -97,7 +98,7 @@ public class SQL {
                 } else if (option.startsWith("-import=")){
                     String filename = args[0].split("=")[1];
                     Importer importer = new Importer(db);
-                    importer.importDatabase(new File(filename));
+                    //importer.import(new File(filename));
 
                 } else if (option.startsWith("-query=")){
                     SQL.listQuery(db, option.split("=")[1]);
@@ -121,7 +122,7 @@ public class SQL {
                     SQL.backup(db);
 
                 } else if (option.startsWith("-restore")){
-                    SQL.restore(db);
+                    SQL.restore(db,null);
 
                 } else {
                     SQL.listUsage();
@@ -291,13 +292,12 @@ public class SQL {
         exporter.backup(tables);
     }
 
-    public static void restore(DatabaseConnection db, String... tables) {
+    public static void restore(DatabaseConnection db, File directory, String... tables) {
         Importer imp = new Importer(db);
         try {
-            if (tables == null){
-
+            for (String t : tables){
+                imp.importCSV( directory, t);
             }
-            imp.importCSV(null, "Activity");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -43,7 +43,7 @@ public class VarCharColumn extends Column {
     }
 
     public String getDDL() {
-        return getColumnName() + " (" + getSize() + ")" + (isAllowNulls() ? "" : " NOT NULL");
+        return getColumnName() + (getSize() == 0 ? "" : " (" + getSize() + ")") + (isAllowNulls() ? "" : " NOT NULL");
     }
 
 }

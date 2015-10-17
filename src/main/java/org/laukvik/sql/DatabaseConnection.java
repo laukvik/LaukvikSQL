@@ -29,7 +29,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * jdbc:mysql://localhost:3306/hurra
+ *
  *
  *
  * @author Morten Laukvik <morten@laukvik.no>

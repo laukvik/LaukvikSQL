@@ -1,8 +1,7 @@
 package org.laukvik.sql;
 
-import org.laukvik.sql.ddl.*;
 
-import javax.xml.crypto.Data;
+import org.laukvik.sql.ddl.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -92,7 +91,7 @@ public class Analyzer {
      * @return
      */
     public List<Table> findTables(String schema,DatabaseConnection db) {
-        LOG.fine("Finding tables in " + db );
+        LOG.fine("Finding tables in " + db);
         List<Table> tables = new ArrayList<>();
         //
         try (Connection conn = db.getConnection()){
@@ -352,20 +351,6 @@ public class Analyzer {
      * @throws SQLException
      */
     public Function findFunctionDetails(Function function,DatabaseConnection db) throws SQLException, IOException {
-        // Gets the database metadata
-        //DatabaseMetaData mtdt = db.getConnection().getMetaData();
-        //System.out.println(mtdt.getProcedureTerm());
-        //ResultSet rs = mtdt.getProcedures(conn.getCatalog(), "%", function.getFilename());
-
-/*
-
-    ResultSet getProcedureColumns(String catalog,
-                                  String schemaPattern,
-                                  String procedureNamePattern,
-                                  String columnNamePattern) throws SQLException;
-
- */
-
         //LOG.info("Getting function details for " + function.getName() );
         try (
             Connection conn = db.getConnection();
@@ -386,12 +371,7 @@ public class Analyzer {
                 //LOG.info("Function: " + function.getName() + " Parameter: " + rs.getString("REMARKS"));
                 FunctionParameter p = new FunctionParameter(rs.getString("COLUMN_NAME"));
                 p.setComments(rs.getString("REMARKS"));
-
-                //System.out.println("\t" + p.getFilename() + " " + p.getDataType() + " " + p.getRemarks());
-
                 function.addParameter(p);
-                //System.out.println( rs.getObject(1) );
-                //System.out.println( rs.getObject(1) );
             }
 
         } catch(Exception e){

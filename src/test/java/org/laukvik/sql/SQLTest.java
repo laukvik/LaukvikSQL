@@ -1,13 +1,9 @@
 package org.laukvik.sql;
 
-import org.junit.*;
-import org.laukvik.sql.DatabaseConnectionNotFoundException;
-import org.laukvik.sql.SQL;
-import org.laukvik.sql.DatabaseConnection;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.List;
-
-import static org.junit.Assert.fail;
 
 public class SQLTest {
 

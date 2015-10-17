@@ -1,8 +1,7 @@
-package org.laukvik.org.laukvik.sql.ddl;
+package org.laukvik.sql;
 
 import org.junit.Test;
 import org.laukvik.sql.ddl.IntegerColumn;
-import org.laukvik.sql.ddl.Table;
 
 /**
  * Created by morten on 16.10.2015.

@@ -15,11 +15,11 @@
 
     <!-- set global properties for this build -->
     <property name="src.dir" location="src"/>
-    <property name="build.dir" location="build"/>
-    <property name="dist.dir" location="dist"/>
-    <property name="test.dir" location="test"/>
+    <property name="build.dir" location="target/classes"/>
+    <property name="dist.dir" location="target/dist"/>
+    <property name="test.dir" location="src/test/java"/>
     <property name="lib.dir" value="lib"/>
-    <property name="report.dir" value="reports"/>
+    <property name="report.dir" value="target/reports"/>
 
     <!-- Drivers -->
     <property name="postgres.version" value="9.1-901-1.jdbc4"/>
