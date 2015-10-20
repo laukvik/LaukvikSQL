@@ -22,14 +22,12 @@ public class Restore extends SqlCommand {
     public int run(DatabaseConnection db, String value) {
         File directory = new File(value);
         if (directory.exists()){
-
             try {
                 Importer imp = new Importer(db);
                 imp.importDirectory(directory);
-                //restore(db,directory);
                 return SUCCESS;
             } catch (DatabaseReadOnlyException e) {
-                e.printStackTrace();
+                System.out.println("Connection is read only!");
             }
         } else {
 

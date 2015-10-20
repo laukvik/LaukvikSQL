@@ -108,6 +108,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         setSize(Toolkit.getDefaultToolkit().getScreenSize());
         treeModel = new TreeModel();
         //setDatabaseConnection(db);
+        //setVisible(true);
     }
 
     /**
@@ -117,6 +118,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
      */
     public void setDatabaseConnection(DatabaseConnection db) {
         LOG.info("Setting databaseConnection to " + db);
+
         this.db = db;
 
         treeModel.setDatabaseConnection(db);
@@ -169,7 +171,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         mainSplitPane.setRightComponent(tableSplitPane);
         mainSplitPane.setDividerLocation(DEFAULT_TREE_WIDTH);
         // Open query
-        queryPane.setText("SELECT * FROM " + t.getName());
+        queryPane.setText(t.getSelectTable());
 
         if (resultModel != null){
             resultModel.close();

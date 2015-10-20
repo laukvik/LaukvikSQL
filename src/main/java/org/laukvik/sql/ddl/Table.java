@@ -93,6 +93,9 @@ public class Table implements Sqlable {
         return b.toString();
     }
 
+    public String getSelectTable(){
+        return "SELECT * FROM " + name + " ORDER BY " + getColumns().get(0).getName() + " ASC";
+    }
 
     public String getDDL() {
         StringBuilder b = new StringBuilder();

@@ -19,6 +19,9 @@ package org.laukvik.sql;
 
 import java.util.logging.Logger;
 import org.laukvik.sql.cmd.*;
+import org.laukvik.sql.swing.Viewer;
+
+import javax.xml.crypto.Data;
 
 /**
  *
@@ -28,13 +31,6 @@ public class SQL {
     private static final Logger LOG = Logger.getLogger(SQL.class.getName());
 
     public static void main(String[] args) {
-
-        try {
-            System.setProperty("apple.laf.useScreenMenuBar", "true");
-            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
-            LOG.warning("Could not set system look and feel.");
-        }
         CommandManager mgr = new CommandManager("sql");
         mgr.add( new ListConnections());
         mgr.add( new App() );
@@ -54,7 +50,7 @@ public class SQL {
         mgr.add( new ExportTableDDL() );
         mgr.add( new ExportTable() );
         int status = mgr.run(args);
-        System.exit(status);
+        //System.exit(status);
     }
 
 }

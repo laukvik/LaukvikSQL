@@ -73,14 +73,17 @@ public class Importer {
      * @throws DatabaseReadOnlyException
      */
     public void importDirectory( File directory) throws DatabaseReadOnlyException {
+        LOG.fine("Importing directory " + directory.getAbsolutePath());
         try {
             File [] files = directory.listFiles(new BackupFormatFileFilter());
             for (File f : files) {
-                //if (f.getName().equalsIgnoreCase("activity.csv")) {
+                boolean importAll = f.getName().equalsIgnoreCase("project.csv");
+                importAll = true;
+                if (importAll) {
                     if (!f.getName().endsWith(".meta.csv")) {
                         String table = f.getName();
                         String tableName = table.substring(0, table.lastIndexOf(".csv"));
-                        LOG.info("Importing table " + tableName);
+                        LOG.fine("Importing table " + tableName);
 
                         File meta = new File(directory.getAbsolutePath(), tableName + ".meta.csv");
 
@@ -88,7 +91,7 @@ public class Importer {
 
                         importCSV(tableName, meta, data);
                     }
-                //}
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,33 +105,33 @@ public class Importer {
      * @throws Exception
      */
     public long importCSV( String tableName, File meta, File data ) throws Exception {
-
-        //
-
-        LOG.info("Reading meta file " + meta.getAbsolutePath());
+        LOG.fine("Reading meta file " + meta.getAbsolutePath());
         Table t = Importer.readTableMetadata(tableName,meta);
-        createTable(t);
+        boolean wasCreated = createTable(t);
+        System.out.println( t.getDDL() );
 
-
-        LOG.info("Reading data file " + data.getAbsolutePath());
+        LOG.fine("Reading data file " + data.getAbsolutePath());
         InputStream is = new FileInputStream(data);
 
         CsvReader r = new CsvReader( is );
-        System.out.println( r.getMetaData().getColumn(0).getName() );
+
         long updateCount = 0;
         long failedCount = 0;
+        long totalCount  = 0;
         try(
                 Connection conn = db.getConnection();
                 Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 ResultSet rs = st.executeQuery("SELECT * FROM " + tableName );
         ){
             int n = 1;
+            rs.next();
             while(r.hasNext()){
-
+                totalCount++;
                 Row row = r.getRow();
                 try{
                     // Prepare new row
                     rs.moveToInsertRow();
+
 
                     // Fill data
                     for (int x=0; x<t.getColumns().size(); x++){
@@ -141,11 +144,46 @@ public class Importer {
                             //
                             if (c instanceof IntegerColumn){
                                 Integer value = row.getInteger(x);
-                                rs.updateInt(columnIndex, value );
+                                if (value != null){
+                                    rs.updateInt(columnIndex, value );
+                                }
 
                             } else if (c instanceof BigIntColumn){
                                 Integer value = row.getInteger(x);
-                                rs.updateInt(columnIndex, value);
+                                if (value != null){
+                                    rs.updateInt(columnIndex, value );
+                                }
+
+                            } else if (c instanceof DoubleColumn){
+                                Double value = row.getDouble(x);
+                                if (value != null){
+                                    rs.updateDouble(columnIndex, value);
+                                }
+
+                            } else if (c instanceof FloatColumn){
+                                Float value = row.getFloat(x);
+                                if (value != null){
+                                    rs.updateFloat(columnIndex, value);
+                                }
+
+                            } else if (c instanceof BitColumn){
+                                Boolean value = row.getBoolean(x);
+                                if (value != null){
+                                    //rs.updateBoolean(columnIndex, true);
+                                    //rs.updateInt(columnIndex, value ? 1 : 0);
+                                    //rs.updateString(columnIndex, value ? "1" :"0");
+                                    //byte [] bytes = {1};
+                                    //rs.updateBytes(columnIndex, bytes);
+                                    //rs.updateObject(columnIndex, 1);
+                                    short s = 1;
+                                    //rs.updateShort(columnIndex, s );
+                                    //rs.updateString(columnIndex, "CAST(1 AS BIT)");
+                                    //rs.updateObject(columnIndex, "CAST(1 AS BIT)");
+                                    byte b = 1;
+                                    //rs.updateByte(columnIndex,b);
+
+                                }
+
 
                             } else if (c instanceof VarCharColumn){
                                 String value = row.getString(x);
@@ -153,14 +191,21 @@ public class Importer {
 
                             } else if (c instanceof TimestampColumn){
                                 String value = row.getString(x);
-                                rs.updateString(columnIndex, value);
+                                if (value == null || value.trim().isEmpty()){
+
+                                } else {
+                                    TimestampColumn dc = (TimestampColumn)c;
+                                    SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ); // 2011-10-13 16:26:45.0
+                                    Date date = format.parse( value );
+                                    rs.updateTimestamp(columnIndex, new java.sql.Timestamp(date.getTime()));
+                                }
 
                             } else if (c instanceof DateColumn){
                                 String value = row.getString(x);
-                                DateColumn dc = (DateColumn)c;
                                 if (value == null || value.trim().isEmpty()){
                                     rs.updateNull(columnIndex);
                                 } else {
+                                    DateColumn dc = (DateColumn)c;
                                     SimpleDateFormat format = new SimpleDateFormat(dc.getFormat());
                                     Date date = format.parse( value );
                                     rs.updateDate(columnIndex, new java.sql.Date( date.getTime() ));
@@ -174,17 +219,17 @@ public class Importer {
                     rs.insertRow();
 
                     updateCount++;
-                    LOG.info("Row #" + n + " imported." );
+                    System.out.println( t.getName() + ": #" + n + " imported. " + row.getString(0));
                 } catch(SQLException e2){
                     failedCount++;
-                    LOG.info("Row #" + n + " - " + e2.getMessage() );
+                    System.out.println(t.getName() + ": #" + n + " failed! Message: " + e2.getMessage());
                 }
                 n++;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Imported " + updateCount + " rows. " + failedCount + " rows failed!" );
+        System.out.println(t.getName() + ": Imported " + updateCount + "/" + totalCount + "." );
         return updateCount;
     }
 
@@ -192,18 +237,22 @@ public class Importer {
      *
      * @param table
      */
-    private void createTable( Table table ){
+    private boolean createTable( Table table ){
+        boolean successful = false;
         try(
                 Connection conn = db.getConnection();
                 Statement st = conn.createStatement();
         ){
             int results = st.executeUpdate(table.getDDL());
-            LOG.info("Created table " + table + " with " + table.getColumns().size() + " columns.");
-            System.out.println( table.getDDL());
+            LOG.fine("Created table " + table + " with " + table.getColumns().size() + " columns.");
+            System.out.println( table.getName() +  ": created." );
+            successful = true;
         } catch (Exception e) {
-            LOG.info("Failed to create table " + table +"! (" + e.getMessage() + ")" );
-            System.out.println( table.getDDL());
+            LOG.fine("Failed to create table " + table + "! (" + e.getMessage() + ")");
+            System.out.println( table.getName() +  ": failed to create." );
+            successful = true;
         }
+        return successful;
     }
 
 

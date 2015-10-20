@@ -68,7 +68,7 @@ public class Exporter {
             Connection conn = databaseConnection.getConnection();
             OutputStream out = new FileOutputStream(file);
             CsvWriter writer = new CsvWriter(out);
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM " + table.getName() );
+            ResultSet rs = conn.createStatement().executeQuery( table.getSelectTable() );
         ){
             int columnCount = rs.getMetaData().getColumnCount();
             LOG.fine("Found " + columnCount + " columns in table " + table.getName());
@@ -112,7 +112,7 @@ public class Exporter {
                 System.out.print(table.getName() + ":");
                 out.write( table.getDDL().getBytes() );
                 try (Connection conn = databaseConnection.getConnection();
-                     ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM " + table.getName() )) {
+                     ResultSet rs = conn.createStatement().executeQuery( table.getSelectTable() )) {
                     int cols = rs.getMetaData().getColumnCount();
                     while (rs.next()) {
                         out.write( table.getInsertSQL(rs).getBytes() );
@@ -148,7 +148,7 @@ public class Exporter {
             System.out.println(table.getDDL() );
             try (
                     Connection conn = databaseConnection.getConnection();
-                    ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM " + table.getName() )
+                    ResultSet rs = conn.createStatement().executeQuery( table.getSelectTable() )
                 )
             {
                 int cols = rs.getMetaData().getColumnCount();

@@ -90,6 +90,7 @@ public class Analyzer {
         for (Table t : findTables(schemaName,db)){
             schema.addTable(t);
         }
+
         for (View v : findViews(schemaName,db)){
             schema.addView(v);
         }
@@ -252,8 +253,7 @@ public class Analyzer {
         ){
             DatabaseMetaData dbmd = conn.getMetaData();
             String catalog = null;
-            try{
-                ResultSet rs = dbmd.getFunctions(catalog, schema, "%");
+            try(ResultSet rs = dbmd.getFunctions(catalog, schema, "%");){
                 while (rs.next()) {
                     list.add(new Function(rs.getString(1)));
                 }

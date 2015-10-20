@@ -44,7 +44,6 @@ public class ResultSetTableModel implements TableModel {
     private final Table table;
     private final List<TableModelListener> listeners;
     private ResultSet rs;
-    private int rowIndex;
     private int maxRows;
     private DatabaseConnection db;
     private Connection conn;
@@ -57,7 +56,6 @@ public class ResultSetTableModel implements TableModel {
             conn = db.getConnection();
             Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
             conn = db.getConnection();
-            rowIndex = 0;
             maxRows = 0;
             rs = st.executeQuery("SELECT count(*) FROM " + table.getName());
 
@@ -68,14 +66,12 @@ public class ResultSetTableModel implements TableModel {
                 LOG.log(Level.FINE, "Could not find table {0}", table.getName());
             }
 
-            rs = st.executeQuery("SELECT * FROM " + table.getName() + "");
+            rs = st.executeQuery(table.getSelectTable());
             rs.next();
-            rowIndex = 0;
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     public void close(){
         try {
@@ -131,21 +127,15 @@ public class ResultSetTableModel implements TableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         try {
-            if (this.rowIndex == rowIndex) {
+            if (rowIndex == rs.getRow()-1) {
                 return rs.getObject(columnIndex + 1);
             } else {
                 try {
-                    if (rowIndex == 0){
-                        rs.first();
-                    } else {
-                        rs.absolute(rowIndex);
-                    }
-                    this.rowIndex = rowIndex;
+                    rs.absolute(rowIndex+1);
                     return rs.getObject(columnIndex + 1);
                 } catch (SQLException e) {
                     System.err.println("Row: " + rowIndex + " Column: " + columnIndex + " Message: " + e.getMessage());
                 }
-
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
