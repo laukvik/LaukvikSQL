@@ -3,6 +3,7 @@ package org.laukvik.sql;
 import org.junit.Assert;
 import org.junit.Test;
 import org.laukvik.csv.ParseException;
+import org.laukvik.sql.ddl.Column;
 import org.laukvik.sql.ddl.Table;
 
 import java.io.File;
@@ -23,18 +24,19 @@ public class ImporterTest {
         ClassLoader classLoader = org.laukvik.sql.ImporterTest.class.getClassLoader();
         return new File(classLoader.getResource(filename).getFile());
     }
+
     @Test
-    public void shouldReadMetaData() throws IOException, ParseException {
-        Table t = Importer.readTableMetadata("Employee", getResource("employee.meta.csv"));
-        Assert.assertEquals("",3,t.getColumns().size());
-        //System.out.println( t.getDDL() );
+    public void importEmployees() throws Exception {
+        DatabaseConnection db = DatabaseConnection.read("test");
+        Importer importer = new Importer(db);
+        //importer.importCSV( org.laukvik.sql.ImporterTest.getTestFolder() );
     }
 
     @Test
-    public void read() throws Exception {
+    public void importPresidents() throws Exception {
         DatabaseConnection db = DatabaseConnection.read("test");
         Importer importer = new Importer(db);
-        importer.importCSV( org.laukvik.sql.ImporterTest.getTestFolder(), "employee");
+        //importer.importCSV( org.laukvik.sql.ImporterTest.getTestFolder(), "presidents");
     }
 
 }

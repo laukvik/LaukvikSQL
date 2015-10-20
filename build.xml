@@ -15,6 +15,7 @@
 
     <!-- set global properties for this build -->
     <property name="src.dir" location="src"/>
+    <property name="resources.dir" location="src/main/resources"/>
     <property name="build.dir" location="target/classes"/>
     <property name="dist.dir" location="target/dist"/>
     <property name="test.dir" location="src/test/java"/>
@@ -30,6 +31,7 @@
     <path id="project.classpath">
         <fileset dir="${basedir}/">
             <include name="${lib.dir}/*.jar" />
+            <include name="${resources.dir}/*.*" />
             <include name="${lib.dir}/org/laukvik/sql/swing/icons/*.*" />
         </fileset>
     </path>

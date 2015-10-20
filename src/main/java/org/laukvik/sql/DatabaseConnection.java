@@ -48,8 +48,17 @@ public class DatabaseConnection {
     private String driver;
     private String database;
     private String schema;
+    private boolean readOnly;
 
     public DatabaseConnection() {
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
     }
 
     public String getSchema() {
@@ -128,10 +137,12 @@ public class DatabaseConnection {
         this.server = server;
     }
 
-
     public Connection getConnection() throws SQLException, IOException {
-        Connection connection = DriverManager.getConnection(getConnectionURL(), getUser(), getPassword());
-        return connection;
+        if (url == null || url.trim().isEmpty()){
+            return DriverManager.getConnection(getConnectionURL(), getUser(), getPassword());
+        } else {
+            return DriverManager.getConnection(url, getUser(), getPassword());
+        }
     }
 
     public String toString(){
@@ -152,7 +163,7 @@ public class DatabaseConnection {
         DatabaseConnection db = new DatabaseConnection();
         // Read settings file
         Properties p = new Properties();
-        File f = new File( SQL.getConnectionsHome(),  namedConnection + ".properties");
+        File f = new File( Analyzer.getConnectionsHome(),  namedConnection + ".properties");
         try {
             p.load(new FileInputStream(f));
         } catch (FileNotFoundException e) {
@@ -171,6 +182,17 @@ public class DatabaseConnection {
         db.setDatabase(p.getProperty("database"));
         db.setDriver( p.getProperty("driver"));
         db.setSchema(p.getProperty("schema"));
+        String r = p.getProperty("readonly");
+        if (r == null){
+            db.setReadOnly(true);
+
+        } else if (p.getProperty("readonly").equalsIgnoreCase("true")){
+            db.setReadOnly( true );
+
+        } else if (p.getProperty("readonly").equalsIgnoreCase("no")){
+            db.setReadOnly( false );
+        }
+
         return db;
     }
 

@@ -35,7 +35,7 @@ public class Function implements Sqlable {
         this.parameters = new ArrayList<>();
     }
 
-    public String getDetails(){
+    public String getFunctionSummary(){
         StringBuilder b = new StringBuilder();
         b.append("function: " + name  + "\n");
         b.append("parameters: ");

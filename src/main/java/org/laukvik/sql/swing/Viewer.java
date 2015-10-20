@@ -63,7 +63,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
     public Viewer() {
         super();
         emptyPanel = new JPanel();
-        bundle = ResourceBundle.getBundle("messages");
+        //bundle = ResourceBundle.getBundle("messages");
         initComponents();
 
         newMenuItem.setAccelerator(ResourceManager.getKeyStroke(KeyEvent.VK_N));
@@ -581,7 +581,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
                     Exporter exporter = new Exporter( db );
 
                     try {
-                        exporter.exportTablesAsCSV(file);
+                        exporter.backupCSV(file);
                         JOptionPane.showMessageDialog(this,"Exported: " + file.getAbsolutePath());
                     } catch (FileNotFoundException e) {
                         JOptionPane.showMessageDialog(this,e.getMessage());
@@ -672,6 +672,19 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
     @Override
     public boolean canConnect(DatabaseConnection connection) {
         return db.canConnect();
+    }
+
+    public static void main(String[] args) throws DatabaseConnectionNotFoundException, DatabaseConnectionInvalidException {
+        DatabaseConnection db = DatabaseConnection.read("test");
+       /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+
+                Viewer v = new Viewer();
+                v.setDatabaseConnection(db);
+                v.setVisible(true);
+            }
+        });
     }
 
 }

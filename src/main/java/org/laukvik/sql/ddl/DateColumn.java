@@ -17,11 +17,15 @@
  */
 package org.laukvik.sql.ddl;
 
+import java.text.DateFormat;
+
 /**
  *
  * @author Morten Laukvik <morten@laukvik.no>
  */
 public class DateColumn extends Column {
+
+    private DateFormat FORMAT;
 
     public DateColumn(String name) {
         super(name);

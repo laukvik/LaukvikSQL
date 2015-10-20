@@ -9,7 +9,7 @@ public class SQLTest {
 
     @Test
     public void shouldFindNamedConnections() throws DatabaseConnectionNotFoundException {
-        List<DatabaseConnection> conns = SQL.findDatabaseConnections();
+        List<DatabaseConnection> conns = Analyzer.findDatabaseConnections();
         Assert.assertEquals(4,conns.size());
         System.out.println("Connections: " + conns.size());
         for (DatabaseConnection c : conns){
