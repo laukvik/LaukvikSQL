@@ -21,9 +21,9 @@ package org.laukvik.sql.ddl;
  *
  * @author Morten Laukvik <morten@laukvik.no>
  */
-public class BitColumn extends Column {
+public class BooleanColumn extends Column {
 
-    public BitColumn(String name) {
+    public BooleanColumn(String name) {
         super(name);
     }
 
@@ -33,9 +33,15 @@ public class BitColumn extends Column {
     }
 
     public String getFormatted( Object value ){
-        //System.out.println("Bit: " + value );
-        boolean v = (boolean)value;
-        return "B'" + (v ? "1": "0") + "'";
+        if (value == null){
+            return null;
+        } else if (value instanceof Boolean){
+            Boolean v = (boolean)value;
+            return v.toString();
+        } else {
+            return null;
+        }
+        //return "B'" + (v ? "1": "0") + "'";
     }
 
 }

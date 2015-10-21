@@ -129,7 +129,7 @@ public abstract class Column {
     public static Column parse(int columnType, String name) {
         switch (columnType) {
             case TYPE_BIT:
-                return new BitColumn(name);
+                return new BooleanColumn(name);
             case TYPE_TINYINT:
                 return new TinyIntColumn(name);
             case TYPE_BIGINT:
