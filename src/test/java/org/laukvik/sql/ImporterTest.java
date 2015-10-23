@@ -29,14 +29,14 @@ public class ImporterTest {
     public void importEmployees() throws Exception {
         DatabaseConnection db = DatabaseConnection.read("test");
         Importer importer = new Importer(db);
-        //importer.importCSV( org.laukvik.sql.ImporterTest.getTestFolder() );
+        //importer.installFromCsvFile( org.laukvik.sql.ImporterTest.getTestFolder() );
     }
 
     @Test
     public void importPresidents() throws Exception {
         DatabaseConnection db = DatabaseConnection.read("test");
         Importer importer = new Importer(db);
-        //importer.importCSV( org.laukvik.sql.ImporterTest.getTestFolder(), "presidents");
+        //importer.installFromCsvFile( org.laukvik.sql.ImporterTest.getTestFolder(), "presidents");
     }
 
 }

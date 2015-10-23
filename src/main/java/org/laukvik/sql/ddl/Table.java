@@ -17,6 +17,9 @@
  */
 package org.laukvik.sql.ddl;
 
+import org.laukvik.sql.DatabaseConnection;
+
+import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,6 +64,27 @@ public class Table implements Sqlable {
         columns.add(c);
     }
 
+
+    public List<Column> findPrimaryKeys(){
+        List<Column> cols = new ArrayList<>();
+        for (Column c : columns){
+            if (c.isPrimaryKey()){
+                cols.add(c);
+            }
+        }
+        return cols;
+    }
+
+    public Column findColumnByName(String name) {
+        for (Column c : columns){
+            if (c.getName().equalsIgnoreCase(name)){
+                return c;
+            }
+        }
+        return null;
+    }
+
+
     public String getInsertSQL( ResultSet rs ) throws SQLException{
         StringBuilder b = new StringBuilder();
         b.append("INSERT INTO "+ name +"(");
@@ -97,6 +121,38 @@ public class Table implements Sqlable {
         return "SELECT * FROM " + name + " ORDER BY " + getColumns().get(0).getName() + " ASC";
     }
 
+    public List<String> getPostConstraintScript(DatabaseConnection db){
+        List<String> list = new ArrayList<>();
+        for (Column c : columns){
+            if (c.getForeignKey() != null){
+                ForeignKey fk = c.getForeignKey();
+                list.add( "ALTER TABLE "+ c.getTable().getName() +" ADD FOREIGN KEY ("+ c.getName() +") REFERENCES " + fk.getDDL()  +";"  );
+            }
+        }
+        return list;
+    }
+
+    public List<String> getPostAutoNumberScript(DatabaseConnection db){
+        List<String> list = new ArrayList<>();
+        for (Column c : columns){
+            if (c.isAutoIncrement()){
+
+                if (db.getDriver() == null){
+                    // Do nothing
+                } else if (db.getDriver().equalsIgnoreCase("postgres")){
+                    //b.append("ALTER TABLE " + name + " ALTER COLUMN "+ c.getName() +" TYPE SERIAL;");
+
+                } else if (db.getDriver().equalsIgnoreCase("mysql")){
+                    //b.append( "ALTER TABLE " + name + " MODIFY COLUMN " + c.getName() + " " + c.getColumnName() + " auto_increment;" );
+                    list.add( "ALTER TABLE " + name + " MODIFY COLUMN " + c.getName() + " " + c.getColumnName() + " auto_increment;" );
+                } else {
+
+                }
+            }
+        }
+        return list;
+    }
+
     public String getDDL() {
         StringBuilder b = new StringBuilder();
         b.append("CREATE TABLE ");
@@ -120,11 +176,11 @@ public class Table implements Sqlable {
                 b.append(")");
             }
             */
-            /*if (c.getDefaultValue() != null){
-                b.append(" DEFAULT '");
+            if (c.getDefaultValue() != null){
+                b.append(" DEFAULT ");
                 b.append( c.getDefaultValue());
-                b.append("'");
-            }*/
+                b.append("");
+            }
             if (c.isAutoIncrement()){
                 //b.append(" AUTOINCREMENT");
             }
@@ -157,22 +213,21 @@ public class Table implements Sqlable {
         return b.toString();
     }
 
-    public List<Column> findPrimaryKeys(){
-        List<Column> cols = new ArrayList<>();
+    /**
+     * Returns whether a script is necessary to run before completion
+     *
+     * @return
+     */
+    public boolean isPostInstallRequired() {
+        boolean required = false;
         for (Column c : columns){
-            if (c.isPrimaryKey()){
-                cols.add(c);
+            if (c.isAutoIncrement()){
+                required = true;
+            }
+            if (c.getForeignKey() != null){
+                required = true;
             }
         }
-        return cols;
-    }
-
-    public Column findColumnByName(String name) {
-        for (Column c : columns){
-            if (c.getName().equalsIgnoreCase(name)){
-                return c;
-            }
-        }
-        return null;
+        return required;
     }
 }

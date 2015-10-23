@@ -527,7 +527,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         LOG.info("exportMenuItem: ");
         FileDialog dialog = new FileDialog(this);
         dialog.setLocationRelativeTo(null);
-        dialog.setFilenameFilter( new BackupFormatFileFilter() );
+        dialog.setFilenameFilter( new BackupMetaDataFileFilter() );
 
 
 
@@ -541,7 +541,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
             if (o instanceof Table){
                 Table t = (Table)o;
                 dialog.setTitle("Export table to file");
-                dialog.setFile( t.getName() + BackupFormatFileFilter.EXTENSION);
+                dialog.setFile( t.getName() + BackupMetaDataFileFilter.EXTENSION);
                 dialog.setMode( FileDialog.SAVE );
                 dialog.setVisible(true);
                 if (dialog.getName().isEmpty()){
@@ -676,17 +676,6 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         return db.canConnect();
     }
 
-    public static void main(String[] args) throws DatabaseConnectionNotFoundException, DatabaseConnectionInvalidException {
-        DatabaseConnection db = DatabaseConnection.read("test");
-       /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
 
-                Viewer v = new Viewer();
-                v.setDatabaseConnection(db);
-                v.setVisible(true);
-            }
-        });
-    }
 
 }

@@ -74,6 +74,11 @@ public abstract class Column {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+        if (defaultValue == null){
+
+        } else if (defaultValue.isEmpty()){
+            this.defaultValue = null;
+        }
     }
 
     public boolean isAutoIncrement() {
@@ -207,7 +212,7 @@ public abstract class Column {
     }
 
     public String getDDL() {
-        return getColumnName() + "" + (allowNulls ? "" : " NOT NULL");
+        return getColumnName() + "" + (allowNulls ? " NULL" : " NOT NULL");
     }
 
     public int getSize() {
