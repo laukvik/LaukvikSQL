@@ -28,6 +28,8 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
+import javax.xml.crypto.Data;
+
 import org.laukvik.sql.*;
 import org.laukvik.sql.ddl.*;
 import org.laukvik.sql.ddl.Schema;
@@ -128,9 +130,7 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
 
         diagramPanel.removeAll();
         if (db == null){
-
-        } else if (db.getSchema() == null) {
-            setTitle("");
+            
         } else {
             /*
             Analyzer a = new Analyzer();
@@ -199,19 +199,6 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         tc3.setPreferredWidth(40);
     }
 
-    public void openSQL(Sqlable sqlable) {
-        if (sqlable instanceof Table) {
-            /* Table items */
-            Table t = (Table) sqlable;
-            openTable(t);
-
-        } else if (sqlable instanceof Function) {
-            /* Function items */
-        } else {
-            /* Other items */
-            openDiagram();
-        }
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -463,8 +450,12 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
     private void treeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeValueChanged
         if (evt.getPath() != null) {
             Object o = evt.getPath().getLastPathComponent();
+            LOG.info("Opening tree: " + o );
 
-            if (o instanceof Schema) {
+            if (o == null || o == treeModel.getRoot()){
+                openDiagram();
+
+            } else if (o instanceof Schema) {
                 openDiagram();
 
             } else if (o instanceof Table) {
@@ -480,7 +471,6 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
 
             }
         }
-
     }//GEN-LAST:event_treeValueChanged
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
@@ -684,12 +674,25 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
             e.printStackTrace();
         }
 
+
+
        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 
                 Viewer v = new Viewer();
-                v.setDatabaseConnection( new DatabaseConnection());
+                if (args.length == 0){
+                    v.setDatabaseConnection( new DatabaseConnection());
+                } else {
+                    try {
+                        DatabaseConnection db = DatabaseConnection.read(args[0]);
+                        v.setDatabaseConnection( db );
+                    } catch (DatabaseConnectionNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (DatabaseConnectionInvalidException e) {
+                        e.printStackTrace();
+                    }
+                }
                 v.setVisible(true);
             }
         });
