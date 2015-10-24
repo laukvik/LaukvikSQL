@@ -64,6 +64,15 @@ public class Table implements Sqlable {
         columns.add(c);
     }
 
+    public List<Column> findForeignKeys(){
+        List<Column> cols = new ArrayList<>();
+        for (Column c : columns){
+            if (c.getForeignKey() != null){
+                cols.add(c);
+            }
+        }
+        return cols;
+    }
 
     public List<Column> findPrimaryKeys(){
         List<Column> cols = new ArrayList<>();

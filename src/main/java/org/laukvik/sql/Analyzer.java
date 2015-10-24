@@ -202,9 +202,14 @@ public class Analyzer {
              *
              */
             for (Table t : tables){
-                try (ResultSet rs = conn.getMetaData().getImportedKeys(null, null, t.getName())){
+                String catalogName = null;
+                String schemaName = "hurra2";
+                String tableName = t.getName();
+                System.out.println("Looking for foreignKey for table " + tableName);
+                try (ResultSet rs = conn.getMetaData().getImportedKeys(catalogName, schemaName, tableName)){
                     while (rs.next()) {
-                        LOG.finest("Looking for foreign key for table '" + t.getName() + "': " + rs.getString("FKTABLE_NAME")+"."+rs.getString("FKCOLUMN_NAME") + " " + rs.getString("PKTABLE_NAME")+"."+rs.getString("PKCOLUMN_NAME"));
+                        System.out.println("Found foreign key: ");
+                        LOG.finest("Looking for foreign key for table '" + t.getName() + "': " + rs.getString("FKTABLE_NAME") + "." + rs.getString("FKCOLUMN_NAME") + " " + rs.getString("PKTABLE_NAME") + "." + rs.getString("PKCOLUMN_NAME"));
                         Column c = t.findColumnByName(rs.getString("FKCOLUMN_NAME"));
                         if (c == null){
 

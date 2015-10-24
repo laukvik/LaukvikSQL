@@ -237,4 +237,8 @@ public abstract class Column {
     public int index(){
         return table.getColumns().indexOf(this);
     }
+
+    public void setForeignKey( Column column ){
+        setForeignKey( new ForeignKey(column.getTable().getName(),column.getName()));
+    }
 }

@@ -118,7 +118,7 @@ public class Importer {
             // Find table
             Table table = tables.get(x);
             File data = datas.get(x);
-            boolean wasCreated = postInstallAutoNumber(table);
+            boolean wasCreated = postInstallForeignKey(table);
             System.out.println( (x+1) + "/" + tables.size() + " " + table.getName() + " - ForeignKey: " + (wasCreated ? "Ok":"Failed") );
         }
 
@@ -179,12 +179,13 @@ public class Importer {
     public boolean postInstallForeignKey(Table t){
         if (t.isPostInstallRequired()){
             try(
-                    Connection conn = db.getConnection();
-                    Statement st = conn.createStatement();
+                Connection conn = db.getConnection();
+                Statement st = conn.createStatement();
             ){
                 for (String q : t.getPostConstraintScript(db)){
                     try{
                         st.executeUpdate( q );
+                        System.out.println("Updated FK: " + q );
                     } catch (Exception e){
                         System.out.println( t.getName() +": Constraint failed! Script: " + q + " Error: " + e.getMessage());
                         return false;

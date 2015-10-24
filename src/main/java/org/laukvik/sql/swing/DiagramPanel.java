@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,6 +31,8 @@ import org.laukvik.sql.ddl.VarCharColumn;
 import org.laukvik.sql.swing.icons.ResourceManager;
 
 public class DiagramPanel extends JPanel implements MouseListener, MouseMotionListener {
+
+    private final Logger LOG = Logger.getLogger(DiagramPanel.class.getName());
 
     private static final long serialVersionUID = 1L;
 
@@ -77,35 +80,32 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
     /**
+     * Adds a table
      *
      * @param table
      */
     public void addTable(Table table) {
-        int index = tables.size();
+        LOG.fine("Added table: " + table + " fk: " + table.findForeignKeys().size());
         tables.add(table);
-
         int panelWidth = 700;
         int tableWidth = 150;
         int padding = 20;
-
         int tablesPrRow = panelWidth / tableWidth;
-
-        //locations.add(new Point((index % tablesPrRow)*200, (index / tablesPrRow)*200 ));
         locations.add(new Point(0, 0));
         fireTablesChanged();
     }
 
+    /**
+     * Creates a grid locations for all tables
+     *
+     */
     public void autoLayout() {
         for (int index = 0; index < tables.size(); index++) {
             int panelWidth = getWidth();
             int tableWidth = 150;
             int padding = 20;
-
             int tablesPrRow = 5;
-
-            //System.out.println( index + "=" + (index % tablesPrRow));
             locations.get(index).setLocation((index % tablesPrRow) * 200, (index / tablesPrRow) * 200);
-            //locations.add(new Point((index % tablesPrRow)*200, (index / tablesPrRow)*200 ));
         }
         setSize(calculateSize());
     }
@@ -148,21 +148,18 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
     public void findForeignKeys() {
-        /*
          foreignKeys.clear();
          for (Table t : tables) {
-         //			System.out.println( "Checking table " + t.getFilename() );
-         for (Column c : t.getColumns()) {
-         //				System.out.println( "Checking column " + c.getFilename() );
-         if (c.getForeignKey() != null) {
-         //					System.out.println( "Found link: " );
-         Column primaryKey = findPrimaryKey(c.foreignKey);
-         c.foreignKey.setColumnTarget(primaryKey);
-         foreignKeys.add(c);
+         //System.out.println( "Checking table " + t.getName() );
+             for (Column c : t.getColumns()) {
+             //System.out.println( "Checking column " + c.getName() );
+                 if (c.getForeignKey() != null) {
+                     //System.out.println( "Found link: " + c.getForeignKey() );
+                     Column primaryKey = findPrimaryKey(c.getForeignKey());
+                     foreignKeys.add(c);
+                 }
+             }
          }
-         }
-         }
-         */
     }
 
     public int getIndex(Table table) {
@@ -186,11 +183,13 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
      * @param g
      */
     public void paintForeignKey(Column column, Graphics g) {
+        System.out.println("foreignKey: " + column );
         int tableIndex = getIndex(column.getTable());
         if (column.getForeignKey() == null) {
             // No foreign key
         } else {
             Column pk = findColumnTarget(column.getForeignKey());
+
             if (pk == null) {
                 // Should never happen
             } else {
@@ -219,21 +218,21 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
             tablesChanged = false;
         }
 
+
         /* Turn anti-aliasing on to smooth corners and lines */
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        /* Paint each table */
-        for (Table t : tables) {
-            paintTable(t, g);
-        }
 
         /* Paint the foreign key lines */
         for (Column fk : foreignKeys) {
             paintForeignKey(fk, g);
         }
 
+        /* Paint each table */
+        for (Table t : tables) {
+            paintTable(t, g);
+        }
     }
 
     public Dimension calculateSize() {
@@ -313,11 +312,15 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
         employee.addColumn(new VarCharColumn("lastName"));
         employee.addColumn(new VarCharColumn("email"));
 
+
         IntegerColumn employeeCompanyID = new IntegerColumn("companyID");
         employeeCompanyID.setForeignKey(new ForeignKey("Company", "companyID"));
 
         IntegerColumn employeeDepartmentID = new IntegerColumn("departmentID");
         employeeDepartmentID.setForeignKey(new ForeignKey("Department", "departmentID"));
+
+        employee.addColumn(employeeCompanyID);
+        employee.addColumn(employeeDepartmentID);
 
         // Company
         Table company = new Table("Company");
@@ -334,6 +337,7 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
         department.addColumn(dID);
         department.addColumn(new VarCharColumn("name"));
         department.addColumn(new VarCharColumn("contact"));
+
 
         IntegerColumn companyID = new IntegerColumn("companyID");
         ForeignKey contactFK = new ForeignKey("Company", "companyID");

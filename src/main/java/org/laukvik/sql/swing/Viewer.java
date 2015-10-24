@@ -120,36 +120,18 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
      */
     public void setDatabaseConnection(DatabaseConnection db) {
         LOG.info("Setting databaseConnection to " + db);
-
         this.db = db;
-
         treeModel.setDatabaseConnection(db);
-
         tree.setCellRenderer(treeModel);
         tree.setModel(treeModel);
-
         diagramPanel.removeAll();
-        if (db == null){
-            
-        } else {
-            /*
-            Analyzer a = new Analyzer();
-            Schema s = new Schema();
-            try {
-                s = a.findSchema( db.getSchema(), db );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
+        if (db != null){
             for (Table t : treeModel.getSchema().getTables()) {
                 diagramPanel.addTable(t);
             }
-
         }
-
         tree.setSelectionPath(new TreePath(treeModel.getRoot()));
-
         diagramPanel.autoLayout();
-
     }
 
     public void openDiagram() {
@@ -159,7 +141,6 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
 
     public void openFunction(Function function) {
         LOG.info("Function: " + function.getName());
-
     }
 
     public void openView(View view) {
