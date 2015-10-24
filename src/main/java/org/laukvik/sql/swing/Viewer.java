@@ -676,6 +676,23 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         return db.canConnect();
     }
 
+    public static void main(String[] args) throws DatabaseConnectionNotFoundException, DatabaseConnectionInvalidException {
 
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName() );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+       /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+
+                Viewer v = new Viewer();
+                v.setDatabaseConnection( new DatabaseConnection());
+                v.setVisible(true);
+            }
+        });
+    }
 
 }

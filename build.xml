@@ -6,6 +6,7 @@
     <!-- Application details -->
     <property name="app.name" value="Featherine"/>
     <property name="app.class" value="org.laukvik.sql.SQL"/>
+    <property name="osx.class" value="org.laukvik.sql.swing.Viewer"/>
     <property name="app.author" value="Morten Laukvik"/>
     <property name="app.description" value="A utility library to view, backup and restore database through JDBC drivers"/>
     <property name="app.copyright" value="Morten Laukvik (C) 2015"/>
@@ -104,7 +105,7 @@
                    copyright="${app.copyright}"
                    applicationcategory="public.app-category.development"
                    shortversion="1"
-                   mainclassname="${app.class}">
+                   mainclassname="${osx.class}">
             <classpath file="${dist.dir}/laukvik-sql.jar"/>
             <classpath file="${lib.dir}/AbsoluteLayout.jar"/>
             <classpath file="${lib.dir}/mysql-${mysql.version}.jar"/>
