@@ -411,7 +411,7 @@ public class DiagramPanel extends JPanel implements MouseListener, MouseMotionLi
                 int x = csv.getRow(n).getInteger("x");
                 int y = csv.getRow(n).getInteger("y");
                 Table t = findTableByName(table);
-                LOG.info("Table: " + table + " " + x + "/" + y);
+                LOG.fine("Table: " + table + " " + x + "/" + y);
                 if (t != null){
                     setTableLocation( new Point(x,y), t);
                 }
