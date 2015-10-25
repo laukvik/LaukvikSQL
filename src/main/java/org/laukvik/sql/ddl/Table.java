@@ -179,7 +179,7 @@ public class Table implements Sqlable {
 
             } else {
                 b.append(" REFERENCES ");
-                b.append( c.getForeignKey().getTable() );
+                b.append( c.getForeignKey().findTableByName() );
                 b.append("(");
                 b.append( c.getForeignKey().getColumn() );
                 b.append(")");
@@ -238,5 +238,24 @@ public class Table implements Sqlable {
             }
         }
         return required;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Table table = (Table) o;
+
+        if (!name.equals(table.name)) return false;
+        return !(schema != null ? !schema.equals(table.schema) : table.schema != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (schema != null ? schema.hashCode() : 0);
+        return result;
     }
 }

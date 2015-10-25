@@ -109,8 +109,8 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         jToolBar1.setVisible(false);
         setSize(Toolkit.getDefaultToolkit().getScreenSize());
         treeModel = new TreeModel();
-        //setDatabaseConnection(db);
-        //setVisible(true);
+
+        diagramScroll.setBorder(null);
     }
 
     /**
@@ -124,14 +124,23 @@ public class Viewer extends javax.swing.JFrame implements ConnectionDialogListen
         treeModel.setDatabaseConnection(db);
         tree.setCellRenderer(treeModel);
         tree.setModel(treeModel);
-        diagramPanel.removeAll();
+        diagramPanel.removeTables();
         if (db != null){
             for (Table t : treeModel.getSchema().getTables()) {
                 diagramPanel.addTable(t);
             }
+            diagramPanel.autoLayout(getWidth()-mainSplitPane.getDividerLocation());
+            try {
+                diagramPanel.read( getDiagramFile() );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         tree.setSelectionPath(new TreePath(treeModel.getRoot()));
-        diagramPanel.autoLayout();
+    }
+
+    public File getDiagramFile(){
+        return Analyzer.getDiagramFile(db);
     }
 
     public void openDiagram() {

@@ -36,6 +36,11 @@ public class Analyzer {
         return items;
     }
 
+    public static File getDiagramFile( DatabaseConnection db ) {
+        File home = new File( getConnectionsHome(),  db.getFilename() + ".dgm");
+        return home;
+    }
+
     public static File getLibraryHome() {
         File home = new File(System.getProperty("user.home"), "Library");
         if (!home.exists()){
@@ -205,10 +210,9 @@ public class Analyzer {
                 String catalogName = null;
                 String schemaName = "hurra2";
                 String tableName = t.getName();
-                System.out.println("Looking for foreignKey for table " + tableName);
+                //System.out.println("Looking for foreignKey for table " + tableName);
                 try (ResultSet rs = conn.getMetaData().getImportedKeys(catalogName, schemaName, tableName)){
                     while (rs.next()) {
-                        System.out.println("Found foreign key: ");
                         LOG.finest("Looking for foreign key for table '" + t.getName() + "': " + rs.getString("FKTABLE_NAME") + "." + rs.getString("FKCOLUMN_NAME") + " " + rs.getString("PKTABLE_NAME") + "." + rs.getString("PKCOLUMN_NAME"));
                         Column c = t.findColumnByName(rs.getString("FKCOLUMN_NAME"));
                         if (c == null){
